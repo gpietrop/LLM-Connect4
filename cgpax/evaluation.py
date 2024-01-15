@@ -1,7 +1,7 @@
 from typing import Callable, Dict
 import gymnasium
 import jax.numpy as jnp
-from lgp.cgpax.encoding import genome_to_lgp_program
+from cgpax.encoding import genome_to_lgp_program
 
 
 def _evaluate_program(program: Callable, program_state_size: int, env: gymnasium.Env,
@@ -11,7 +11,7 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gymnasium
     cumulative_reward = 0.
 
     done_time = episode_length
-    print(episode_length)
+    # print(episode_length)
     for i in range(episode_length):
         # print(obs)
         inputs = jnp.asarray(obs)
@@ -22,7 +22,7 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gymnasium
         # Convert the action to a valid column choice (0 to 6)
         action = jnp.argmax(actions) % 7
         # print("before")
-        print(action)
+        # print(action)
         # print(env.board)
         obs, reward, done, _, info = env.step(action)
         # print(obs)

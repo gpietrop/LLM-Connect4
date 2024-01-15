@@ -3,7 +3,7 @@ from typing import Callable, Dict
 import gymnasium
 import jax.numpy as jnp
 
-from lgp.cgpax.encoding import genome_to_cgp_program, genome_to_lgp_program
+from cgpax.encoding import genome_to_cgp_program, genome_to_lgp_program
 
 
 def _evaluate_program(program: Callable, program_state_size: int, env: gymnasium.Env,

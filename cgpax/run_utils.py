@@ -4,12 +4,12 @@ from typing import Callable, Tuple, Dict, Union
 import jax.numpy as jnp
 from jax import vmap, jit, random
 
-from lgp.cgpax.functions import available_functions, constants
-from lgp.cgpax.individual import mutate_genome_n_times, mutate_genome_n_times_stacked, compute_cgp_genome_mask, \
+from cgpax.functions import available_functions, constants
+from cgpax.individual import mutate_genome_n_times, mutate_genome_n_times_stacked, compute_cgp_genome_mask, \
     compute_cgp_mutation_prob_mask, compute_lgp_genome_mask, compute_lgp_mutation_prob_mask, \
     levels_back_transformation_function, lgp_one_point_crossover_genomes
-from lgp.cgpax.selection import truncation_selection, tournament_selection, fp_selection, composed_selection
-from lgp.cgpax.utils import identity
+from cgpax.selection import truncation_selection, tournament_selection, fp_selection, composed_selection
+from cgpax.utils import identity
 
 
 def update_config_with_data(config: Dict, observation_space_size: int, action_space_size: int) -> None:

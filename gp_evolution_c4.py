@@ -1,13 +1,14 @@
 import time
 from typing import Tuple
+import numpy as np
 
 from jax import random
 import jax.numpy as jnp
-from lgp.cgpax.evaluation import evaluate_lgp_genome
-from lgp.cgpax.individual import generate_population
-from lgp.cgpax.run_utils import update_config_with_env_data, compute_masks, compute_weights_mutation_function, \
+from cgpax.evaluation import evaluate_lgp_genome
+from cgpax.individual import generate_population
+from cgpax.run_utils import update_config_with_env_data, compute_masks, compute_weights_mutation_function, \
     compile_parents_selection, compile_crossover, compile_mutation, compile_survival_selection
-from mario_gym import MarioEnv
+from c4_gym import Connect4Env
 
 
 # TODO find how many time steps are used in the mario game in java
@@ -17,10 +18,11 @@ def evaluate_genomes(genomes_array: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarr
     percentages_list = []
     dead_times_list = []
     for genome_array in genomes_array:
-        result = evaluate_lgp_genome(genome_array, config, mario_env, episode_length=1000)
+        result = evaluate_lgp_genome(genome_array, config, c4_env, episode_length=42)
+        # print(result["reward"])
         fitnesses_list.append(result["reward"])
-        percentages_list.append(result["final_percentage"])
-        dead_times_list.append(result["dead_time"])
+        percentages_list.append(1.0)  # Placeholder value
+        dead_times_list.append(result["done"])
     return jnp.asarray(fitnesses_list), jnp.asarray(percentages_list), jnp.asarray(dead_times_list)
 
 
@@ -35,29 +37,28 @@ def log_data(generation: int, fitnesses: jnp.ndarray, percentages: jnp.ndarray, 
 if __name__ == '__main__':
 
     config = {
-        "n_rows": 20,
+        "n_rows": 30,
         "n_extra_registers": 5,
         "seed": 0,
         "n_individuals": 100,
         "solver": "lgp",
-        "p_mut_lhs": 0.5,
-        "p_mut_rhs": 0.5,
+        "p_mut_lhs": 0.1,
+        "p_mut_rhs": 0.1,
         "p_mut_functions": 0.1,
-        "n_generations": 1000,
+        "n_generations": 10,
         "selection": {
-            "elite_size": 1,
+            "elite_size": 0,
             "type": "tournament",
             "tour_size": 2
         },
         "survival": "truncation",
         "crossover": False,
-
     }
 
     rnd_key = random.PRNGKey(config["seed"])
 
-    mario_env = MarioEnv.make()
-    update_config_with_env_data(config, mario_env)
+    c4_env = Connect4Env.make()
+    update_config_with_env_data(config, c4_env)
 
     genome_mask, mutation_mask = compute_masks(config)
     weights_mutation_function = compute_weights_mutation_function(config)
@@ -84,6 +85,7 @@ if __name__ == '__main__':
         # compute offspring
         rnd_key, mutate_key = random.split(rnd_key, 2)
         mutate_keys = random.split(mutate_key, len(parents))
+        # print(mutate_keys)
         if config.get("crossover", False):
             parents1, parents2 = jnp.split(parents, 2)
             rnd_key, *xover_keys = random.split(rnd_key, len(parents1) + 1)
@@ -101,3 +103,12 @@ if __name__ == '__main__':
         # update population
         assert len(genomes) == len(survivals) + len(offspring)
         genomes = jnp.concatenate((survivals, offspring))
+
+        # Assuming 'genomes' is your population and 'fitnesses' is an array of fitness scores
+
+        best_index = np.argmax(fitnesses)  # Index of the best individual
+        best_genome = genomes[best_index]
+
+        # Save the best genome
+        np.save('best_genome.npy', best_genome)
+

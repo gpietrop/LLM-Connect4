@@ -1,6 +1,6 @@
 import numpy as np
-from lgp.cgpax.encoding import genome_to_lgp_program
-from lgp.c4_gym import Connect4Env  # Replace with your actual import
+from cgpax import genome_to_lgp_program
+from c4_gym import Connect4Env  # Replace with your actual import
 
 
 def load_best_genome(filename='best_genome2.npy'):

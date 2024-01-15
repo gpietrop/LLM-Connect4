@@ -6,7 +6,7 @@ import jax.numpy as jnp
 from jax import random
 from jax.lax import fori_loop
 
-from lgp.cgpax.utils import identity
+from cgpax.utils import identity
 
 
 def levels_back_transformation_function(n_in: int, n_nodes: int) -> Callable[[jnp.ndarray], jnp.ndarray]:

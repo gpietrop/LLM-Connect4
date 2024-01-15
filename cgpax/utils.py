@@ -4,7 +4,7 @@ import numpy as np
 import jax.numpy as jnp
 from jax import jit
 
-from lgp.cgpax.functions import available_functions
+from cgpax.functions import available_functions
 
 
 @jit
