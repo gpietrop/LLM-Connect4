@@ -51,9 +51,6 @@ class Connect4Env(gym.Env):
         else:
             self.opponent = red_policy
 
-    # Implement seed, reset, step, render, close, and property methods similarly to OthelloEnv.
-    # ...
-
     def seed(self, seed=None):
         self.rand_seed = seed if seed is not None else self.rand_seed
         self.rnd = np.random.RandomState(seed=self.rand_seed)
@@ -64,6 +61,13 @@ class Connect4Env(gym.Env):
         obs = self.env.reset()
         self.max_rand_steps = self.rnd.randint(0, self.initial_rand_steps // 2 + 1) * 2
         self.rand_step_cnt = 0
+
+        # This provides the opponent a chance to get env.possible_moves.
+        if hasattr(self.opponent, 'reset'):
+            try:
+                self.opponent.reset(self)
+            except TypeError:
+                pass
 
         if self.env.player_turn == self.protagonist:
             return obs
@@ -76,8 +80,7 @@ class Connect4Env(gym.Env):
                 return obs
 
     def step(self, action):
-        if self.env.player_turn != self.protagonist:
-            raise ValueError("Not protagonist's turn")
+        assert self.env.player_turn == self.protagonist
 
         if self.rand_step_cnt < self.max_rand_steps:
             action = self.rnd.choice(self.env.possible_moves)
@@ -92,7 +95,8 @@ class Connect4Env(gym.Env):
             return obs, reward, done, None
 
         while not done and self.env.player_turn != self.protagonist:
-            print("opponent: ", self.opponent == None)
+            # print("opponent: ", self.opponent is None)
+            # print(self.opponent.env)
             opponent_move = self.opponent.get_action(obs)
             obs, _, done, _ = self.env.step(opponent_move)
             if self.render_in_step:
@@ -123,8 +127,8 @@ class Connect4BaseEnv(gym.Env):
     metadata = {'render.modes': ['np_array', 'human']}
 
     def __init__(self, sudden_death_on_invalid_move=True, num_disk_as_reward=False, possible_actions_in_obs=False,
-                 mute=True):
-        self.board_size = 6
+                 mute=True, board_size=6):
+        self.board_size = board_size
         self.sudden_death_on_invalid_move = sudden_death_on_invalid_move
         self.num_disk_as_reward = num_disk_as_reward
         self.mute = mute
@@ -143,7 +147,7 @@ class Connect4BaseEnv(gym.Env):
             low=NO_DISK, high=YELLOW_DISK, shape=(self.board_size, self.board_size), dtype=np.int8)
 
     def _reset_board(self):
-        return np.zeros((self.board_size, self.board_size), dtype=int)
+        return np.zeros([self.board_size] * 2, dtype=int)
 
     def reset(self):
         self.board_state = self._reset_board()
@@ -151,10 +155,11 @@ class Connect4BaseEnv(gym.Env):
         self.winner = NO_DISK
         self.terminated = False
         self.possible_moves = self._get_possible_actions()
-        obs = self.board_state.flatten()
-        return obs
+        # obs = self.board_state.flatten()
+        return self.get_observation()  # obs
 
     def _get_possible_actions(self):
+        # print(self.board_state)
         return [col for col in range(self.board_size) if self.board_state[0][col] == NO_DISK]
 
     def _is_valid_move(self, action):
@@ -192,10 +197,43 @@ class Connect4BaseEnv(gym.Env):
                         return self.board_state[row][col]
         return NO_DISK
 
+    def set_board_state(self, board_state):
+        """Sets the board state for Connect 4 game."""
+
+        # Check if the board state has more than 2 dimensions.
+        if np.ndim(board_state) > 2:
+            raise ValueError("Board state dimension is higher than expected")
+
+        # Set the new board state
+        self.board_state = np.array(board_state)
+
+    def set_player_turn(self, turn):
+        """Sets the player's turn for the Connect 4 game."""
+
+        if turn not in [RED_DISK, YELLOW_DISK]:
+            raise ValueError("Invalid player turn. Must be RED_DISK or YELLOW_DISK.")
+
+        self.player_turn = turn
+
+        # Update possible moves for the new player turn
+        self.possible_moves = self._get_possible_actions()
+
+    def get_observation(self):
+        """Returns the current state of the Connect 4 board."""
+
+        if self.possible_actions_in_obs:
+            # Include a grid of possible moves (1 if the move is possible in that column, 0 otherwise)
+            grid_of_possible_moves = np.zeros(self.board_size, dtype=bool)
+            for move in self.possible_moves:
+                grid_of_possible_moves[move] = True
+            return np.array([self.board_state, grid_of_possible_moves])
+        else:
+            return np.array(self.board_state)
+
     def step(self, action):
         if self.terminated:
             raise ValueError('Game has terminated!')
-        print("action: ", action)
+        # print("action: ", action)
         if not self._is_valid_move(action):
             if self.sudden_death_on_invalid_move:
                 self.terminated = True

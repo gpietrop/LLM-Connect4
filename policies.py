@@ -73,7 +73,10 @@ class GreedyPolicy(object):
 
         for move in possible_moves:
             new_env.reset()
+            # print("obs", obs)
             new_env.set_board_state(obs)  # Assuming set_board_state sets up the board from the observation
+            new_env.board_state.resize((6, 6))
+            # print("new state", new_env.board_state.resize((6, 6)))
             new_env.set_player_turn(my_perspective)
             _, reward, _, _ = new_env.step(move)
 
@@ -83,5 +86,6 @@ class GreedyPolicy(object):
                 best_move = move
 
         new_env.close()
+
         return best_move # if best_move is not None else np.random.choice(possible_moves)
 

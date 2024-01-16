@@ -39,12 +39,12 @@ if __name__ == '__main__':
         "n_rows": 20,
         "n_extra_registers": 5,
         "seed": 0,
-        "n_individuals": 100,
+        "n_individuals": 10,
         "solver": "lgp",
         "p_mut_lhs": 0.3,
         "p_mut_rhs": 0.3,
         "p_mut_functions": 0.1,
-        "n_generations": 100,
+        "n_generations": 10,
         "selection": {
             "elite_size": 1,
             "type": "tournament",
@@ -84,7 +84,7 @@ if __name__ == '__main__':
     # Evolution loop
     for _generation in tqdm(range(config["n_generations"]), position=1, desc="Generations"):
         start_eval = time.process_time()
-        print(genomes)
+        # print(genomes)
         fitnesses, percentages, dead_times = evaluate_genomes(genomes)
         end_eval = time.process_time()
         eval_time = end_eval - start_eval
