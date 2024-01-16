@@ -32,7 +32,7 @@ def update_config_with_data(config: Dict, observation_space_size: int, action_sp
 
 
 def update_config_with_env_data(config: Dict, env) -> None:
-    update_config_with_data(config, env.observation_size, env.action_size)
+    update_config_with_data(config, env.board_size**2, env.board_size**2)
 
 
 def compute_parallel_runs_indexes(n_individuals: int, n_parallel_runs: int, n_elites: int = 1) -> jnp.ndarray:

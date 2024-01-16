@@ -1,3 +1,4 @@
+import csv
 from typing import List, Tuple, Any, Dict
 
 import numpy as np
@@ -6,6 +7,22 @@ from jax import jit
 
 from cgpax.functions import available_functions
 
+
+class CSVLogger:
+
+    def __init__(self, filename: str, header: List) -> None:
+        self._filename = filename
+        self._header = header
+        with open(self._filename, "w") as file:
+            writer = csv.DictWriter(file, fieldnames=self._header)
+            # write the header
+            writer.writeheader()
+
+    def log(self, metrics: Dict[str, float]) -> None:
+        with open(self._filename, "a") as file:
+            writer = csv.DictWriter(file, fieldnames=self._header)
+            # write new metrics in a raw
+            writer.writerow(metrics)
 
 @jit
 def identity(x: Any, *args) -> Any:
