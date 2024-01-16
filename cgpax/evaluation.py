@@ -1,5 +1,5 @@
 from typing import Callable, Dict
-import gym, gymnasium
+import gym
 import jax.numpy as jnp
 from cgpax.encoding import genome_to_lgp_program
 
@@ -35,7 +35,7 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
     }
 
 
-def evaluate_lgp_genome(genome: jnp.ndarray, config: Dict, env: gymnasium.Env,
+def evaluate_lgp_genome(genome: jnp.ndarray, config: Dict, env: gym.Env,
                         episode_length: int = 100,  # Adjusted episode length for Connect 4
                         inner_evaluator: Callable = _evaluate_program) -> Dict:
     val_ = inner_evaluator(genome_to_lgp_program(genome, config), config["n_registers"], env, episode_length)
