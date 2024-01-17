@@ -1,6 +1,7 @@
 """Simple policies for Connect 4."""
 
 import numpy as np
+import random
 
 # Constants for Connect 4
 RED_DISK = 1
@@ -89,3 +90,62 @@ class GreedyPolicy(object):
 
         return best_move # if best_move is not None else np.random.choice(possible_moves)
 
+
+class ImprovedGreedyPolicy(object):
+    """Improved Greedy policy for Connect 4 with defensive and lookahead strategies."""
+
+    def __init__(self):
+        self.env = None
+        self.lookahead_depth = 1  # Adjust this for deeper lookahead
+        self.randomness_factor = 0.1  # 10% chance to make a random move
+
+    def reset(self, env):
+        if hasattr(env, 'env'):
+            self.env = env.env
+        else:
+            self.env = env
+
+    def get_action(self, obs):
+        if self.env is None:
+            return np.random.choice(self.env.possible_moves)
+
+        if random.random() < self.randomness_factor:
+            # Occasionally make a random move
+            return np.random.choice(self.env.possible_moves)
+
+        my_perspective = self.env.player_turn
+        new_env = copy_env(self.env)
+
+        # Evaluate each possible move
+        possible_moves = self.env.possible_moves
+        best_score = -float('inf')
+        best_move = None
+
+        for move in possible_moves:
+            new_env.reset()
+            new_env.set_board_state(obs)
+            new_env.set_player_turn(my_perspective)
+            _, reward, _, _ = new_env.step(move)
+
+            if reward > best_score:
+                best_score = reward
+                best_move = move
+
+            # Look-ahead for opponent's response
+            opponent_perspective = 1 if my_perspective == 0 else 0
+            new_env.set_player_turn(opponent_perspective)
+            opponent_moves = new_env.possible_moves
+            for opp_move in opponent_moves:
+                new_env.reset()
+                new_env.set_board_state(obs)
+                new_env.set_player_turn(opponent_perspective)
+                _, opp_reward, _, _ = new_env.step(opp_move)
+
+                # If the opponent can win next turn, block that move
+                if opp_reward > 0:
+                    best_move = opp_move
+                    best_score = 0  # Blocking move has priority
+
+        new_env.close()
+
+        return best_move if best_move is not None else np.random.choice(possible_moves)
