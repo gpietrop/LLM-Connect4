@@ -27,12 +27,16 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
         # print("game over?", done)
         # print("winner", )
         final_percentage = reward
-        if not done:
-            cumulative_reward -= (1. - reward)
-        else:
-            cumulative_reward -= (1. - reward) * (episode_length - i)
-            done_time = i
+
+        cumulative_reward += reward
+        if done:
             break
+        # if not done:
+        #     cumulative_reward -= (1. - reward)
+        # else:
+        #     cumulative_reward -= (1. - reward) * (episode_length - i)
+        #     done_time = i
+        #    break
 
     return {
         "reward": cumulative_reward,
