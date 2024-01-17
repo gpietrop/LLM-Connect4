@@ -2,6 +2,7 @@ import os
 import time
 from typing import Tuple, Dict
 from multiprocessing import Pool
+import numpy as np
 
 import yaml
 from jax import random
@@ -38,15 +39,15 @@ if __name__ == '__main__':
     config = {
         "n_rows": 20,
         "n_extra_registers": 5,
-        "seed": 0,
-        "n_individuals": 1000,
+        "seed": 100,
+        "n_individuals": 1,
         "solver": "lgp",
-        "p_mut_lhs": 0.3,
-        "p_mut_rhs": 0.3,
-        "p_mut_functions": 0.1,
+        "p_mut_lhs": 0.0,
+        "p_mut_rhs": 0.0,
+        "p_mut_functions": 0.0,
         "n_generations": 10,
         "selection": {
-            "elite_size": 1,
+            "elite_size": 0,
             "type": "tournament",
             "tour_size": 2
         },
@@ -98,7 +99,7 @@ if __name__ == '__main__':
             "max_dead_time": max(dead_times),
             "eval_time": eval_time
         }
-        print("\n best fitness", max(fitnesses))
+        print("\n mean fitness", np.mean(fitnesses))
         csv_logger.log(metrics)
 
         # Parent selection
@@ -135,6 +136,7 @@ if __name__ == '__main__':
     # Render and evaluate the best genome
     connect4_env.render()
     best_genome = genomes[jnp.argmax(fitnesses)]
+    jnp.save(f"results/{run_name}/best_genome.npy", best_genome)
     evaluate_lgp_genome(best_genome, config, connect4_env, episode_length=42)
 
 

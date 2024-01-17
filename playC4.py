@@ -1,9 +1,11 @@
 import numpy as np
-from cgpax import genome_to_lgp_program
-from c4_gym import Connect4Env  # Replace with your actual import
+import os
+import gym
+from cgpax.encoding import genome_to_lgp_program
+from c4_gym_play import Connect4EnvPlay  # Replace with your actual import
 
 
-def load_best_genome(filename='best_genome2.npy'):
+def load_best_genome(filename= os.getcwd() + '/results/connect4_trial_100/best_genome.npy'):
     return np.load(filename)
 
 
@@ -13,7 +15,7 @@ def is_valid_move(self, column):
 
 
 def play_against_best(config):
-    env = Connect4Env()
+    env = Connect4EnvPlay()
     best_genome = load_best_genome()
     best_strategy = genome_to_lgp_program(best_genome, config)  # Convert genome to strategy
 
