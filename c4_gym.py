@@ -244,6 +244,7 @@ class Connect4BaseEnv(gym.Env):
 
         self._drop_disk(action)
         winner = self._check_winner()
+        # print("winner: ", winner)
 
         if winner != NO_DISK:
             self.terminated = True
@@ -252,7 +253,14 @@ class Connect4BaseEnv(gym.Env):
         self.player_turn = YELLOW_DISK if self.player_turn == RED_DISK else RED_DISK
         self.possible_moves = self._get_possible_actions()
 
-        reward = 1 if winner == self.player_turn else 0
+        # reward = 1 if winner == self.player_turn else 0
+        if winner == 1:
+            reward = 1  # we win
+        elif winner == -1:
+            reward = -1  # the strategy win
+        else:
+            reward = 0  # no winner
+
         return self.board_state.flatten(), reward, self.terminated, {}
 
     def render(self, mode='human', close=False):

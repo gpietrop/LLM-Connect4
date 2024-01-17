@@ -32,7 +32,7 @@ def get_human_move(possible_moves):
 
 def main():
     # Initialize the environment
-    env = Connect4Env(yellow_policy=GreedyPolicy())  # Or any other policy you wish to play against
+    env = Connect4Env(yellow_policy=GreedyPolicy ())  # Or any other policy you wish to play against
     obs = env.reset()
     done = False
 

@@ -23,7 +23,7 @@ def evaluate_genomes(genomes_array: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarr
     percentages_list = []
     dead_times_list = []
 
-    args = [(genome, config, Connect4Env(num_disk_as_reward=True), 1000) for genome in genomes_array]
+    args = [(genome, config, Connect4Env(num_disk_as_reward=True), 42) for genome in genomes_array]
 
     with Pool(processes=os.cpu_count() - 1) as pool:
         for result in pool.starmap(evaluate_lgp_genome, args):
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         "n_rows": 20,
         "n_extra_registers": 5,
         "seed": 0,
-        "n_individuals": 10,
+        "n_individuals": 1000,
         "solver": "lgp",
         "p_mut_lhs": 0.3,
         "p_mut_rhs": 0.3,
@@ -86,6 +86,7 @@ if __name__ == '__main__':
         start_eval = time.process_time()
         # print(genomes)
         fitnesses, percentages, dead_times = evaluate_genomes(genomes)
+        # print(fitnesses, percentages, dead_times)
         end_eval = time.process_time()
         eval_time = end_eval - start_eval
 
@@ -97,6 +98,7 @@ if __name__ == '__main__':
             "max_dead_time": max(dead_times),
             "eval_time": eval_time
         }
+        print("\n best fitness", max(fitnesses))
         csv_logger.log(metrics)
 
         # Parent selection
@@ -133,7 +135,7 @@ if __name__ == '__main__':
     # Render and evaluate the best genome
     connect4_env.render()
     best_genome = genomes[jnp.argmax(fitnesses)]
-    evaluate_lgp_genome(best_genome, config, connect4_env, episode_length=1000)
+    evaluate_lgp_genome(best_genome, config, connect4_env, episode_length=42)
 
 
 
