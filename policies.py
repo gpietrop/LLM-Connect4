@@ -69,7 +69,7 @@ class GreedyPolicy(object):
 
         # Evaluate each possible move by its immediate benefit.
         possible_moves = self.env.possible_moves
-        best_score = -1
+        best_score = -100
         best_move = None
 
         for move in possible_moves:
@@ -106,8 +106,6 @@ class ImprovedGreedyPolicy(object):
             self.env = env
 
     def get_action(self, obs):
-        if self.env is None:
-            return np.random.choice(self.env.possible_moves)
 
         if random.random() < self.randomness_factor:
             # Occasionally make a random move
@@ -118,12 +116,13 @@ class ImprovedGreedyPolicy(object):
 
         # Evaluate each possible move
         possible_moves = self.env.possible_moves
-        best_score = -float('inf')
+        best_score = -100  # float('inf')
         best_move = None
 
         for move in possible_moves:
             new_env.reset()
             new_env.set_board_state(obs)
+            new_env.board_state.resize((6, 6))
             new_env.set_player_turn(my_perspective)
             _, reward, _, _ = new_env.step(move)
 
@@ -132,13 +131,16 @@ class ImprovedGreedyPolicy(object):
                 best_move = move
 
             # Look-ahead for opponent's response
-            opponent_perspective = 1 if my_perspective == 0 else 0
+
+            opponent_perspective = RED_DISK
             new_env.set_player_turn(opponent_perspective)
             opponent_moves = new_env.possible_moves
             for opp_move in opponent_moves:
                 new_env.reset()
                 new_env.set_board_state(obs)
+                new_env.board_state.resize((6, 6))
                 new_env.set_player_turn(opponent_perspective)
+                # print("debug")
                 _, opp_reward, _, _ = new_env.step(opp_move)
 
                 # If the opponent can win next turn, block that move
