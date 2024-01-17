@@ -19,7 +19,7 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
         new_program_state, actions = program(inputs, program_state)
         # print(actions)
         selected_action = jnp.argmax(actions) % 6
-        print(selected_action)
+        # print(selected_action)
         obs, reward, done, info = env.step(selected_action)  # Make sure action is an integer
         # print(obs.reshape((6, 6)))
         # print("reward:", reward)

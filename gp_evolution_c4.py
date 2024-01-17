@@ -39,15 +39,15 @@ if __name__ == '__main__':
     config = {
         "n_rows": 20,
         "n_extra_registers": 5,
-        "seed": 100,
-        "n_individuals": 1,
+        "seed": 1,
+        "n_individuals": 100,
         "solver": "lgp",
         "p_mut_lhs": 0.0,
         "p_mut_rhs": 0.0,
         "p_mut_functions": 0.0,
         "n_generations": 10,
         "selection": {
-            "elite_size": 0,
+            "elite_size": 10,
             "type": "tournament",
             "tour_size": 2
         },
