@@ -230,6 +230,91 @@ class Connect4BaseEnv(gym.Env):
         else:
             return np.array(self.board_state)
 
+    def _is_progressing_towards_win_3(self, player):
+        # Define the length of the line that we consider as progress (e.g., 2 or 3)
+        progress_line_length = 3
+
+        # Check horizontally
+        for row in range(self.board_size):
+            for col in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row, col + i] == player for i in range(progress_line_length)):
+                    return True
+
+        # Check vertically
+        for col in range(self.board_size):
+            for row in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row + i, col] == player for i in range(progress_line_length)):
+                    return True
+
+        # Check diagonally (downward)
+        for row in range(self.board_size - progress_line_length + 1):
+            for col in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row + i, col + i] == player for i in range(progress_line_length)):
+                    return True
+
+        # Check diagonally (upward)
+        for row in range(progress_line_length - 1, self.board_size):
+            for col in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row - i, col + i] == player for i in range(progress_line_length)):
+                    return True
+
+        return False
+
+    def _is_progressing_towards_win_2(self, player):
+        # Define the length of the line that we consider as progress (e.g., 2 or 3)
+        progress_line_length = 2
+
+        # Check horizontally
+        for row in range(self.board_size):
+            for col in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row, col + i] == player for i in range(progress_line_length)):
+                    return True
+
+        # Check vertically
+        for col in range(self.board_size):
+            for row in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row + i, col] == player for i in range(progress_line_length)):
+                    return True
+
+        # Check diagonally (downward)
+        for row in range(self.board_size - progress_line_length + 1):
+            for col in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row + i, col + i] == player for i in range(progress_line_length)):
+                    return True
+
+        # Check diagonally (upward)
+        for row in range(progress_line_length - 1, self.board_size):
+            for col in range(self.board_size - progress_line_length + 1):
+                if all(self.board_state[row - i, col + i] == player for i in range(progress_line_length)):
+                    return True
+
+        return False
+
+    def calculate_reward(self, winner):
+        reward = 0
+        if winner == self.player_turn:
+            reward = 1  # Won the game
+        elif winner == NO_DISK:
+            if self._is_progressing_towards_win_2(self.player_turn):  # it was self.player_turn
+                if self._is_progressing_towards_win_3(self.player_turn):  # it was self.player_turn
+                    reward = 0.6  # Making progress towards win
+                else:
+                    reward = 0.3
+            # if self._is_progressing_towards_win(-self.player_turn):  # it was -self.player_turn
+                # print(self.player_turn)
+            #     reward = -0.0  # Opponent is making progress
+        else:
+            reward = 0  # Lost the game
+        return reward
+
+    def calculate_simple_reward(self, winner):
+        # it was: reward = 1 if winner == self.player_turn else 0
+        if winner == self.player_turn:
+            reward = 1  # we win
+        else:
+            reward = 0  # no winner
+        return reward
+
     def step(self, action):
         if self.terminated:
             raise ValueError('Game has terminated!')
@@ -252,14 +337,11 @@ class Connect4BaseEnv(gym.Env):
         self.player_turn = YELLOW_DISK if self.player_turn == RED_DISK else RED_DISK
         self.possible_moves = self._get_possible_actions()
 
+        # print(self.player_turn, winner)
+
         # reward = 1 if winner == self.player_turn else 0
-        # reward = 1 if winner == self.player_turn else 0
-        if winner == 1:
-            reward = 1  # we win
-        elif winner == -1:
-            reward = -1  # the strategy win
-        else:
-            reward = 0  # no winner
+
+        reward = self.calculate_reward(winner)
 
         return self.board_state.flatten(), reward, self.terminated, {}
 
