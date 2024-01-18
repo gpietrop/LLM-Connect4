@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
     csv_logger = CSVLogger(
         filename=f"results/{run_name}/metrics.csv",
-        header=["generation", "max_fitness", "max_percentage", "max_dead_time", "eval_time"]
+        header=["generation", "max_fitness", "mean_fitness", "max_dead_time", "eval_time"]
     )
 
     # Evolution loop
@@ -110,12 +110,12 @@ if __name__ == '__main__':
         metrics = {
             "generation": _generation,
             "max_fitness": max(fitnesses),
-            "max_percentage": max(percentages),
+            "mean_fitness": np.mean(fitnesses),
             "max_dead_time": max(dead_times),
             "eval_time": eval_time
         }
-        print("\n mean fitness", np.mean(fitnesses))
         csv_logger.log(metrics)
+        print("\n mean fitness", np.mean(fitnesses))
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -147,7 +147,7 @@ if __name__ == '__main__':
         start_eval = time.process_time()
 
         # set the opponent policy
-        new_policy = GreedyPolicy()
+        new_policy = ImprovedGreedyPolicy()
         fitnesses, percentages, dead_times = evaluate_genomes(genomes)
         end_eval = time.process_time()
         eval_time = end_eval - start_eval
@@ -156,7 +156,7 @@ if __name__ == '__main__':
         metrics = {
             "generation": _generation,
             "max_fitness": max(fitnesses),
-            "max_percentage": max(percentages),
+            "mean_fitness": np.mean(fitnesses),
             "max_dead_time": max(dead_times),
             "eval_time": eval_time
         }
@@ -189,10 +189,13 @@ if __name__ == '__main__':
         genomes = jnp.concatenate((survivals, offspring))
 
     # Save final results
-    jnp.save(f"results/{run_name}/genotypes.txt", genomes)
-    jnp.save(f"results/{run_name}/fitnesses.txt", fitnesses)
+    jnp.save(f"results/{run_name}/genotypes.npy", genomes)
+    jnp.save(f"results/{run_name}/fitnesses.npy", fitnesses)
     with open(f"results/{run_name}/config.yaml", "w") as file:
         yaml.dump(config, file)
+    # Save final results also on a .txt format
+    np.savetxt(f"results/{run_name}/genotypes.txt", np.array(genomes), fmt='%s')
+    np.savetxt(f"results/{run_name}/fitnesses.txt", np.array(fitnesses), fmt='%s')
 
     # Render and evaluate the best genome
     connect4_env.render()
