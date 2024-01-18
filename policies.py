@@ -82,8 +82,9 @@ class GreedyPolicy(object):
             _, reward, _, _ = new_env.step(move)
 
             # Choose the move with the best immediate reward.
-            if reward > best_score:
-                best_score = reward
+
+            if reward[0] > best_score:
+                best_score = reward[0]
                 best_move = move
 
         new_env.close()
@@ -126,8 +127,8 @@ class ImprovedGreedyPolicy(object):
             new_env.set_player_turn(my_perspective)
             _, reward, _, _ = new_env.step(move)
 
-            if reward > best_score:
-                best_score = reward
+            if reward[0] > best_score:
+                best_score = reward[0]
                 best_move = move
 
             # Look-ahead for opponent's response
@@ -144,7 +145,7 @@ class ImprovedGreedyPolicy(object):
                 _, opp_reward, _, _ = new_env.step(opp_move)
 
                 # If the opponent can win next turn, block that move
-                if opp_reward > 0:
+                if opp_reward[0] > 0.6:
                     best_move = opp_move
                     best_score = 0  # Blocking move has priority
 

@@ -48,10 +48,10 @@ if __name__ == '__main__':
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
         "p_mut_functions": 0.01,
-        "n_generations": 100,
+        "n_generations": 50,
         "yellow_strategy": {
-            "greedy": 0,
-            "greedy_improved": 100
+            "greedy": 100,
+            "greedy_improved": 0
         },
         "selection": {
             "elite_size": 10,
@@ -93,7 +93,8 @@ if __name__ == '__main__':
 
     csv_logger = CSVLogger(
         filename=f"results/{run_name}/metrics.csv",
-        header=["generation", "max_fitness", "mean_fitness", "max_dead_time", "eval_time"]
+        header=["generation", "max_fitness", "mean_fitness",
+                "max_dead_time", "eval_time", "percentage"]
     )
 
     # Evolution loop
@@ -112,10 +113,11 @@ if __name__ == '__main__':
             "max_fitness": max(fitnesses),
             "mean_fitness": np.mean(fitnesses),
             "max_dead_time": max(dead_times),
-            "eval_time": eval_time
+            "eval_time": eval_time,
+            "percentage": np.mean(percentages)
         }
         csv_logger.log(metrics)
-        print("\n mean fitness", np.mean(fitnesses))
+        print(f"\n mean fitness {np.mean(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}%")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -158,10 +160,11 @@ if __name__ == '__main__':
             "max_fitness": max(fitnesses),
             "mean_fitness": np.mean(fitnesses),
             "max_dead_time": max(dead_times),
-            "eval_time": eval_time
+            "eval_time": eval_time,
+            "percentage": np.mean(percentages)
         }
-        print("\n mean fitness", np.mean(fitnesses))
         csv_logger.log(metrics)
+        print(f"\n mean fitness {np.mean(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)

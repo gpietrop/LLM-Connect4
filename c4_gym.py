@@ -104,8 +104,6 @@ class Connect4Env(gym.Env):
             return obs, reward, done, None
 
         while not done and self.env.player_turn != self.protagonist:
-            # print("opponent: ", self.opponent is None)
-            # print(self.opponent.env)
             opponent_move = self.opponent.get_action(obs)
             obs, _, done, _ = self.env.step(opponent_move)
             if self.render_in_step:
@@ -301,8 +299,12 @@ class Connect4BaseEnv(gym.Env):
 
     def calculate_reward(self, winner):
         reward = 0
-        if winner == self.player_turn:
+        is_winner = 0
+        # print(winner, self.player_turn)
+        if winner == 1:
+            # print("win")
             reward = 1  # Won the game
+            is_winner = 1
         elif winner == NO_DISK:
             if self._is_progressing_towards_win_2(self.player_turn):  # it was self.player_turn
                 if self._is_progressing_towards_win_3(self.player_turn):  # it was self.player_turn
@@ -314,7 +316,7 @@ class Connect4BaseEnv(gym.Env):
             #     reward = -0.0  # Opponent is making progress
         else:
             reward = 0  # Lost the game
-        return reward
+        return reward, is_winner
 
     def calculate_simple_reward(self, winner):
         # it was: reward = 1 if winner == self.player_turn else 0
@@ -332,9 +334,9 @@ class Connect4BaseEnv(gym.Env):
             if self.sudden_death_on_invalid_move:
                 self.terminated = True
                 self.winner = -self.player_turn
-                return self.board_state, -1, True, {}
+                return self.board_state, (-1, 0), True, {}
             else:
-                return self.board_state, -1, False, {}
+                return self.board_state, (-1, 0), False, {}
 
         self._drop_disk(action)
         winner = self._check_winner()
@@ -350,9 +352,11 @@ class Connect4BaseEnv(gym.Env):
 
         # reward = 1 if winner == self.player_turn else 0
 
-        reward = self.calculate_reward(winner)
+        reward, is_winner = self.calculate_reward(winner)
+        total_reward = reward, is_winner
+        # print(total_reward)
 
-        return self.board_state.flatten(), reward, self.terminated, {}
+        return self.board_state.flatten(), total_reward, self.terminated, {}
 
     def render(self, mode='human', close=False):
         if close:

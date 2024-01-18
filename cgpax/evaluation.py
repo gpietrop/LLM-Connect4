@@ -14,7 +14,7 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
 
     done_time = episode_length
     dead_time = episode_length
-    final_percentage = 0
+    final_percentage = 0.
     for i in range(episode_length):
         inputs = jnp.asarray(obs.copy().flatten())
 
@@ -22,15 +22,16 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
         # print(actions)
         selected_action = jnp.argmax(actions) % 6
         # print(selected_action)
-        obs, reward, done, info = env.step(selected_action)  # Make sure action is an integer
+        obs, total_reward, done, info = env.step(selected_action)  # Make sure action is an integer
         # print(obs.reshape((6, 6)))
         # print("reward:", reward)
         # print(env._check_winner())
         # print("game over?", done)
         # print("winner", )
-        final_percentage = reward
-
-        cumulative_reward += reward
+        # print(type(total_reward))
+        # print(total_reward)
+        final_percentage = total_reward[1]
+        cumulative_reward += total_reward[0]
         if done:
             break
         # if not done:
