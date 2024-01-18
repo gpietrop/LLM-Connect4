@@ -27,8 +27,9 @@ def lp_fitness(my_seed):
     plt.legend()
 
     # Display the plot
+    plt.savefig(os.getcwd() + f'/../results/connect4_trial_{my_seed}/lp_fitness.png')
+
     plt.show()
-    # plt.savefig(os.getcwd() + f'../connect4_trial_{my_seed}/results/lp_fitness.png')
     plt.close()
 
 

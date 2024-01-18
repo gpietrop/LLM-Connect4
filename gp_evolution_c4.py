@@ -43,15 +43,15 @@ if __name__ == '__main__':
         "n_rows": 20,
         "n_extra_registers": 5,
         "seed": 1,
-        "n_individuals": 20,
+        "n_individuals": 100,
         "solver": "lgp",
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
         "p_mut_functions": 0.01,
-        "n_generations": 10,
+        "n_generations": 100,
         "yellow_strategy": {
-            "greedy": 50,
-            "greedy_improved": 50
+            "greedy": 0,
+            "greedy_improved": 100
         },
         "selection": {
             "elite_size": 10,
@@ -154,7 +154,7 @@ if __name__ == '__main__':
 
         # Log metrics
         metrics = {
-            "generation": _generation,
+            "generation": _generation + n_greedy_generations,
             "max_fitness": max(fitnesses),
             "mean_fitness": np.mean(fitnesses),
             "max_dead_time": max(dead_times),
