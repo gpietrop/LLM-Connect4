@@ -300,9 +300,7 @@ class Connect4BaseEnv(gym.Env):
     def calculate_reward(self, winner):
         reward = 0
         is_winner = 0
-        # print(winner, self.player_turn)
         if winner == 1:
-            # print("win")
             reward = 1  # Won the game
             is_winner = 1
         elif winner == NO_DISK:
@@ -348,13 +346,8 @@ class Connect4BaseEnv(gym.Env):
         self.player_turn = YELLOW_DISK if self.player_turn == RED_DISK else RED_DISK
         self.possible_moves = self._get_possible_actions()
 
-        # print(self.player_turn, winner)
-
-        # reward = 1 if winner == self.player_turn else 0
-
         reward, is_winner = self.calculate_reward(winner)
         total_reward = reward, is_winner
-        # print(total_reward)
 
         return self.board_state.flatten(), total_reward, self.terminated, {}
 

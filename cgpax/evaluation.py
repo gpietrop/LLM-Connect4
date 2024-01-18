@@ -19,17 +19,12 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
         inputs = jnp.asarray(obs.copy().flatten())
 
         new_program_state, actions = program(inputs, program_state)
-        # print(actions)
+
         selected_action = jnp.argmax(actions) % 6
         # print(selected_action)
         obs, total_reward, done, info = env.step(selected_action)  # Make sure action is an integer
         # print(obs.reshape((6, 6)))
-        # print("reward:", reward)
-        # print(env._check_winner())
-        # print("game over?", done)
-        # print("winner", )
-        # print(type(total_reward))
-        # print(total_reward)
+
         final_percentage = total_reward[1]
         cumulative_reward += total_reward[0]
         if done:

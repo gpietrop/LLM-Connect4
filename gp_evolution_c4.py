@@ -17,7 +17,7 @@ from cgpax.run_utils import update_config_with_env_data, compute_masks, compute_
     compile_parents_selection, compile_crossover, compile_mutation, compile_survival_selection
 from cgpax.utils import CSVLogger
 
-from c4_gym import Connect4Env  # Make sure to import the correct class
+from c4_gym import Connect4Env
 from tqdm import tqdm
 from policies import GreedyPolicy, ImprovedGreedyPolicy
 
