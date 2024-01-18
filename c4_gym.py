@@ -17,7 +17,7 @@ class Connect4Env(gym.Env):
 
     def __init__(self,
                  red_policy=None,
-                 yellow_policy=GreedyPolicy(),  # Try GreedyPolicy for Connect 4
+                 yellow_policy=None,  # Try GreedyPolicy for Connect 4
                  protagonist=RED_DISK,
                  board_size=6,  # Set board size to 6x6
                  initial_rand_steps=0,
@@ -78,6 +78,15 @@ class Connect4Env(gym.Env):
                 return self.reset()
             else:
                 return obs
+
+    def set_opponent_policy(self, new_policy):
+        self.opponent = new_policy
+        # If the new policy has a 'seed' method, initialize it with the current seed.
+        if hasattr(self.opponent, 'seed'):
+            self.opponent.seed(self.rand_seed)
+        # If the new policy has a 'reset' method, call it to initialize.
+        if hasattr(self.opponent, 'reset'):
+            self.opponent.reset(self)
 
     def step(self, action):
         assert self.env.player_turn == self.protagonist

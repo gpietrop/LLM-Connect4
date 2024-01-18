@@ -3,6 +3,8 @@ import gym
 import jax.numpy as jnp
 from cgpax.encoding import genome_to_lgp_program
 
+from policies import GreedyPolicy
+
 
 def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
                       episode_length: int = 42) -> Dict:
@@ -21,7 +23,7 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
         selected_action = jnp.argmax(actions) % 6
         # print(selected_action)
         obs, reward, done, info = env.step(selected_action)  # Make sure action is an integer
-        # print(obs.reshape((6, 6)))
+        print(obs.reshape((6, 6)))
         # print("reward:", reward)
         # print(env._check_winner())
         # print("game over?", done)
@@ -46,9 +48,13 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
     }
 
 
-def evaluate_lgp_genome(genome: jnp.ndarray, config: Dict, env: gym.Env,
-                        episode_length: int = 42,  # Adjusted episode length for Connect 4
+def evaluate_lgp_genome(genome: jnp.ndarray,
+                        config: Dict,
+                        env: gym.Env,
+                        episode_length: int = 42,
+                        new_policy=None,
                         inner_evaluator: Callable = _evaluate_program) -> Dict:
+    env.set_opponent_policy(new_policy=new_policy)
     val_ = inner_evaluator(genome_to_lgp_program(genome, config), config["n_registers"], env, episode_length)
     # print(val_)
     return val_

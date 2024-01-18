@@ -17,6 +17,7 @@ from cgpax.run_utils import update_config_with_env_data, compute_masks, compute_
 from cgpax.utils import CSVLogger
 from c4_gym import Connect4Env  # Make sure to import the correct class
 from tqdm import tqdm
+from policies import GreedyPolicy
 
 
 def evaluate_genomes(genomes_array: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]:
@@ -24,7 +25,7 @@ def evaluate_genomes(genomes_array: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarr
     percentages_list = []
     dead_times_list = []
 
-    args = [(genome, config, Connect4Env(num_disk_as_reward=True), 42) for genome in genomes_array]
+    args = [(genome, config, Connect4Env(num_disk_as_reward=True), 42, new_policy) for genome in genomes_array]
 
     with Pool(processes=os.cpu_count() - 1) as pool:
         for result in pool.starmap(evaluate_lgp_genome, args):
@@ -45,7 +46,7 @@ if __name__ == '__main__':
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
         "p_mut_functions": 0.01,
-        "n_generations": 10,
+        "n_generations": 50,
         "selection": {
             "elite_size": 10,
             "type": "tournament",
@@ -64,6 +65,9 @@ if __name__ == '__main__':
     # Initialize the Connect 4 environment
     connect4_env = Connect4Env(num_disk_as_reward=True)
     update_config_with_env_data(config, connect4_env)
+
+    # Set the opponent policy
+    # connect4_env.set_opponent_policy(new_policy=GreedyPolicy())
 
     # Compute masks and compile various functions for genetic programming
     genome_mask, mutation_mask = compute_masks(config)
@@ -85,9 +89,10 @@ if __name__ == '__main__':
     # Evolution loop
     for _generation in tqdm(range(config["n_generations"]), position=1, desc="Generations"):
         start_eval = time.process_time()
-        # print(genomes)
+
+        # set the opponent policy
+        new_policy = GreedyPolicy()
         fitnesses, percentages, dead_times = evaluate_genomes(genomes)
-        # print(fitnesses, percentages, dead_times)
         end_eval = time.process_time()
         eval_time = end_eval - start_eval
 
@@ -137,7 +142,9 @@ if __name__ == '__main__':
     connect4_env.render()
     best_genome = genomes[jnp.argmax(fitnesses)]
     jnp.save(f"results/{run_name}/best_genome.npy", best_genome)
-    evaluate_lgp_genome(best_genome, config, connect4_env, episode_length=42)
+
+    policy = GreedyPolicy()
+    evaluate_lgp_genome(best_genome, config, connect4_env, episode_length=42, new_policy=policy)
 
 
 
