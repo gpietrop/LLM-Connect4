@@ -52,7 +52,7 @@ if __name__ == '__main__':
         "n_rows": 20,
         "n_extra_registers": 5,
         "seed": args.seed,
-        "n_individuals": 100,
+        "n_individuals": 50,
         "solver": "lgp",
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
@@ -201,18 +201,18 @@ if __name__ == '__main__':
         genomes = jnp.concatenate((survivals, offspring))
 
     # Save final results
-    jnp.save(f"results/{run_name}/genotypes.npy", genomes)
-    jnp.save(f"results/{run_name}/fitnesses.npy", fitnesses)
-    with open(f"results/{run_name}/config.yaml", "w") as file:
+    jnp.save(f"results/{run_name}/genotypes_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", genomes)
+    jnp.save(f"results/{run_name}/fitnesses_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", fitnesses)
+    with open(f"results/{run_name}/config_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.yaml", "w") as file:
         yaml.dump(config, file)
     # Save final results also on a .txt format
-    np.savetxt(f"results/{run_name}/genotypes.txt", np.array(genomes), fmt='%s')
-    np.savetxt(f"results/{run_name}/fitnesses.txt", np.array(fitnesses), fmt='%s')
+    np.savetxt(f"results/{run_name}/genotypes_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.txt", np.array(genomes), fmt='%s')
+    np.savetxt(f"results/{run_name}/fitnesses.txt_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}", np.array(fitnesses), fmt='%s')
 
     # Render and evaluate the best genome
     connect4_env.render()
     best_genome = genomes[jnp.argmax(fitnesses)]
-    jnp.save(f"results/{run_name}/best_genome.npy", best_genome)
+    jnp.save(f"results/{run_name}/best_genome_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", best_genome)
 
     policy = GreedyPolicy()
     evaluate_lgp_genome(best_genome, config, connect4_env, episode_length=42, new_policy=policy)
