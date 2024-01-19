@@ -45,6 +45,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, help='Seed for the experiment', default=0)
     parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=100)
     parser.add_argument('--greedy_improved', type=int, help='Percentage for improved greedy strategy', default=0)
+    parser.add_argument('--adaptive', type=bool, help='Adaptive change of policy', default=False)
 
     args = parser.parse_args()
 
@@ -52,12 +53,12 @@ if __name__ == '__main__':
         "n_rows": 20,
         "n_extra_registers": 5,
         "seed": args.seed,
-        "n_individuals": 50,
+        "n_individuals": 10,
         "solver": "lgp",
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
         "p_mut_functions": 0.01,
-        "n_generations": 100,
+        "n_generations": 50,
         "yellow_strategy": {
             "greedy": args.greedy,
             "greedy_improved": args.greedy_improved
@@ -65,15 +66,20 @@ if __name__ == '__main__':
         "selection": {
             "elite_size": 10,
             "type": "tournament",
-            "tour_size": 2
+            "tour_size": 3
         },
         "survival": "truncation",
         "crossover": False,
-        "run_name": "connect4_trial"
+        "run_name": "connect4_trial",
+        "adaptive": args.adaptive
     }
 
+    dir_name = f'results/results_{config["n_individuals"]}_{config["n_generations"]}_{config["adaptive"]}'
+    if not os.path.exists(dir_name):
+        os.mkdir(dir_name)
+
     run_name = f"{config['run_name']}_{config['seed']}"
-    os.makedirs(f"results/{run_name}", exist_ok=True)
+    os.makedirs(f"{dir_name}/{run_name}", exist_ok=True)
 
     rnd_key = random.PRNGKey(config["seed"])
 
@@ -101,7 +107,7 @@ if __name__ == '__main__':
                                   weights_mutation_function=weights_mutation_function)
 
     csv_logger = CSVLogger(
-        filename=f"results/{run_name}/res_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.csv",
+        filename=f"{dir_name}/{run_name}/res_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.csv",
         header=["generation", "max_fitness", "mean_fitness",
                 "max_dead_time", "eval_time", "percentage"]
     )
@@ -126,7 +132,8 @@ if __name__ == '__main__':
             "percentage": np.mean(percentages)
         }
         csv_logger.log(metrics)
-        print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}%")
+        # print(np.mean(percentages))
+        # print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}%")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -153,6 +160,12 @@ if __name__ == '__main__':
         assert len(genomes) == len(survivals) + len(offspring)
         genomes = jnp.concatenate((survivals, offspring))
 
+        # if change policy flag is set to True: change the policy when the best individual win
+        if config["adaptive"] and np.mean(percentages) > 1:
+            # transfer the number of evaluation left to the other policy
+            n_greedy_improved_generations = n_greedy_improved_generations + (n_greedy_generations - n_generations)
+            break
+
     for _generation in tqdm(range(n_greedy_improved_generations), position=1,
                             desc="Generations (Greedy Improved Policy)"):
         start_eval = time.process_time()
@@ -173,7 +186,7 @@ if __name__ == '__main__':
             "percentage": np.mean(percentages)
         }
         csv_logger.log(metrics)
-        print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}")
+        # print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -201,18 +214,18 @@ if __name__ == '__main__':
         genomes = jnp.concatenate((survivals, offspring))
 
     # Save final results
-    jnp.save(f"results/{run_name}/genotypes_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", genomes)
-    jnp.save(f"results/{run_name}/fitnesses_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", fitnesses)
-    with open(f"results/{run_name}/config_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.yaml", "w") as file:
+    jnp.save(f"{dir_name}/{run_name}/genotypes_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", genomes)
+    jnp.save(f"{dir_name}/{run_name}/fitnesses_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", fitnesses)
+    with open(f"{dir_name}/{run_name}/config_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.yaml", "w") as file:
         yaml.dump(config, file)
     # Save final results also on a .txt format
-    np.savetxt(f"results/{run_name}/genotypes_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.txt", np.array(genomes), fmt='%s')
-    np.savetxt(f"results/{run_name}/fitnesses.txt_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}", np.array(fitnesses), fmt='%s')
+    np.savetxt(f"{dir_name}/{run_name}/genotypes_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.txt", np.array(genomes), fmt='%s')
+    np.savetxt(f"{dir_name}/{run_name}/fitnesses.txt_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}", np.array(fitnesses), fmt='%s')
 
     # Render and evaluate the best genome
     connect4_env.render()
     best_genome = genomes[jnp.argmax(fitnesses)]
-    jnp.save(f"results/{run_name}/best_genome_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", best_genome)
+    jnp.save(f"{dir_name}/{run_name}/best_genome_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.npy", best_genome)
 
     policy = GreedyPolicy()
     evaluate_lgp_genome(best_genome, config, connect4_env, episode_length=42, new_policy=policy)
