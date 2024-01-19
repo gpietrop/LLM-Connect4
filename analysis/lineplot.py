@@ -12,7 +12,7 @@ import glob
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+import re
 
 def lp_fitness(my_seed):
     # Path to the directory containing the metrics files
@@ -60,7 +60,12 @@ def lp_fitness_statistical(seeds):
                 aggregated_data[file_name] = []
             aggregated_data[file_name].append(data)
 
-    # Setting up the plot
+    # Set style for more sophisticated look
+    sns.set(style="whitegrid", context="talk", font_scale=1)
+    plt.rcParams["axes.labelweight"] = "bold"
+    plt.rcParams["axes.titleweight"] = "bold"
+
+    # Setting up the plot with a smaller figure size
     plt.figure(figsize=(10, 6))
 
     # Process and plot the aggregated data
@@ -68,14 +73,20 @@ def lp_fitness_statistical(seeds):
         # Concatenate data from different seeds and compute the mean
         concatenated_data = pd.concat(data_list)
         mean_data = concatenated_data.groupby('generation').mean().reset_index()
-        label = file_name.replace('.csv', '')  # Use file name as label
-        sns.lineplot(x='generation', y='max_fitness', data=mean_data, label=f'{label} - Mean Max Fitness')
+        # label = file_name.replace('.csv', '')  # Use file name as label
+        match = re.match(r'res_(\d+)_(\d+).csv', file_name)
+        if match:
+            label = f'{match.group(1)} - {match.group(2)}'
+        sns.lineplot(x='generation', y='max_fitness', data=mean_data, label=f'{label}')
 
-    # Adding title and labels
-    plt.title('Mean Max Fitness Across Generations for Different Seeds')
-    plt.xlabel('Generation')
-    plt.ylabel('Fitness')
+    # Adding title and labels with improved font size and boldness
+    plt.title('Mean Max Fitness Across Generations for Different Seeds', fontsize=15)
+    plt.xlabel('Generation', fontsize=13)
+    plt.ylabel('Fitness', fontsize=13)
     plt.legend()
+
+    # Improving the layout
+    plt.tight_layout()
 
     # Save and show the plot
     plt.savefig(os.path.join(os.getcwd(), f'../results/lp_fitness_mean.png'))
@@ -84,5 +95,5 @@ def lp_fitness_statistical(seeds):
 
 
 if __name__ == '__main__':
-    lp_fitness_statistical([1, 2, 3])
-    # lp_fitness(4)
+    lp_fitness_statistical([1, 2, 3, 4, 5, 6, 7, 8])
+    # lp_fitness(8)
