@@ -42,16 +42,16 @@ if __name__ == '__main__':
     config = {
         "n_rows": 20,
         "n_extra_registers": 5,
-        "seed": 0,
-        "n_individuals": 500,
+        "seed": 4,
+        "n_individuals": 50,
         "solver": "lgp",
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
         "p_mut_functions": 0.01,
-        "n_generations": 100,
+        "n_generations": 50,
         "yellow_strategy": {
-            "greedy": 0,
-            "greedy_improved": 100
+            "greedy": 10,
+            "greedy_improved": 90
         },
         "selection": {
             "elite_size": 10,

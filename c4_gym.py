@@ -301,7 +301,7 @@ class Connect4BaseEnv(gym.Env):
         reward = 0
         is_winner = 0
         if winner == -self.player_turn:
-            reward = 1  # Won the game
+            reward = 5  # Won the game
             is_winner = 1
         elif winner == NO_DISK:
             if self._is_progressing_towards_win_2(self.player_turn):  # it was self.player_turn
@@ -309,9 +309,9 @@ class Connect4BaseEnv(gym.Env):
                     reward = 0.6  # Making progress towards win
                 else:
                     reward = 0.3
-            if self._is_progressing_towards_win_3(-self.player_turn):  # it was -self.player_turn
+            # if self._is_progressing_towards_win_3(-self.player_turn):  # it was -self.player_turn
                 # print(self.player_turn)
-                reward = -0.3  # Opponent is making progress
+            #     reward = -0.3  # Opponent is making progress
         else:
             # print(f"we are {self.player_turn} and we lose")
             reward = 0  # Lost the game
@@ -333,9 +333,9 @@ class Connect4BaseEnv(gym.Env):
             if self.sudden_death_on_invalid_move:
                 self.terminated = True
                 self.winner = -self.player_turn
-                return self.board_state, (-1, 0), True, {}
+                return self.board_state, (-10, 0), True, {}
             else:
-                return self.board_state, (-1, 0), False, {}
+                return self.board_state, (-10, 0), False, {}
 
         self._drop_disk(action)
         winner = self._check_winner()
