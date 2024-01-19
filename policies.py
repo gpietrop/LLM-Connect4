@@ -67,7 +67,7 @@ class GreedyPolicy(object):
         # Evaluate each possible move by its immediate benefit.
         possible_moves = self.env.possible_moves
         best_score = -100
-        best_move = None
+        best_moves = []
 
         for move in possible_moves:
             new_env.reset()
@@ -82,11 +82,70 @@ class GreedyPolicy(object):
             if reward[0] > best_score:
                 best_score = reward[0]
                 # print(best_score)
-                best_move = move
+                best_moves = [move]
+            elif reward[0] == best_score:
+                best_moves.append(move)
 
         new_env.close()
 
-        return best_move # if best_move is not None else np.random.choice(possible_moves)
+        return random.choice(best_moves)  # if best_move is not None else np.random.choice(possible_moves)
+
+
+class IntermediateGreedyPolicy(object):
+    """Intermediate policy for Connect 4 with basic lookahead and defensive strategies."""
+
+    def __init__(self):
+        self.env = None
+        self.randomness_factor = 0.05  # 5% chance to make a random move
+        self.blocking_chance = 0.5
+
+    def reset(self, env):
+        if hasattr(env, 'env'):
+            self.env = env.env
+        else:
+            self.env = env
+
+    def get_action(self, obs):
+
+        if random.random() < self.randomness_factor:
+            return np.random.choice(self.env.possible_moves)
+
+        my_perspective = self.env.player_turn
+        new_env = copy_env(self.env)
+
+        possible_moves = self.env.possible_moves
+        best_score = -100
+        best_move = None
+
+        for move in possible_moves:
+            new_env.reset()
+            new_env.set_board_state(obs)
+            new_env.board_state.resize((6, 6))  # Assuming a 6x6 board
+            new_env.set_player_turn(my_perspective)
+            _, reward, _, _ = new_env.step(move)
+
+            # Simple defensive check
+            opponent_perspective = RED_DISK
+            # Switches to the opponent's perspective and simulates the same move to evaluate its consequences.
+            new_env.reset()
+            new_env.set_board_state(obs)
+            new_env.board_state.resize((6, 6))
+            new_env.set_player_turn(opponent_perspective)
+
+            _, opp_reward, _, _ = new_env.step(move)
+
+            # If the opponent can win with this move, immediately return this move to block the opponent.
+            # print(opp_reward)
+            if opp_reward[1] == 1 and random.random() < self.blocking_chance:
+                return move  # Prioritize blocking over other strategies
+
+            # Evaluate for best move
+            if reward[0] > best_score:
+                best_score = reward[0]
+                best_move = move  # return move
+
+        new_env.close()
+        return best_move if best_move is not None else np.random.choice(possible_moves)
 
 
 class ImprovedGreedyPolicy(object):
@@ -142,9 +201,10 @@ class ImprovedGreedyPolicy(object):
                 _, opp_reward, _, _ = new_env.step(opp_move)
 
                 # If the opponent can win next turn, block that move
-                if opp_reward[0] > 0.6:
+                print(opp_reward)
+                if opp_reward[1] == 1:  # mean the opposite win that turn
                     best_move = opp_move
-                    best_score = 0  # Blocking move has priority
+                    best_score = 5  # Blocking move has priority  FORSE QUA METTO RETURN MOVE???
 
         new_env.close()
 
