@@ -328,7 +328,7 @@ class Connect4BaseEnv(gym.Env):
     def step(self, action):
         if self.terminated:
             raise ValueError('Game has terminated!')
-        # fare attenzione qua, si finiscono pochi giochi
+
         if not self._is_valid_move(action):
             if self.sudden_death_on_invalid_move:
                 self.terminated = True
@@ -339,7 +339,6 @@ class Connect4BaseEnv(gym.Env):
 
         self._drop_disk(action)
         winner = self._check_winner()
-        # print(winner)
 
         if winner != NO_DISK:
             self.terminated = True
