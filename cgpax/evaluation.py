@@ -1,5 +1,6 @@
 from typing import Callable, Dict
 import gym
+import numpy as np
 import jax.numpy as jnp
 from cgpax.encoding import genome_to_lgp_program
 
@@ -27,6 +28,7 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
 
         final_percentage = total_reward[1]
         cumulative_reward += total_reward[0]
+        # print(cumulative_reward)
         if done:
             break
 
@@ -47,17 +49,19 @@ def evaluate_lgp_genome(genome: jnp.ndarray,
 
     env.set_opponent_policy(new_policy=new_policy)
 
-    total_reward = 0.
+    total_reward = []
     min_final_percentage = 1.
 
     for _ in range(5):
         performances = inner_evaluator(genome_to_lgp_program(genome, config), config["n_registers"], env, episode_length)
 
-        total_reward += performances['reward']
+        total_reward.append(performances['reward'])
+        # print(performances['reward'])
         min_final_percentage = min(min_final_percentage, performances['final_percentage'])
 
+    # print(total_reward)
     mean_reward = np.median(total_reward)
-
+    # print(mean_reward)
     return {
         'reward': mean_reward,
         'done': performances['done'],  # Assuming 'done' and 'dead_time' don't change
