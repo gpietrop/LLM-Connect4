@@ -29,12 +29,6 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
         cumulative_reward += total_reward[0]
         if done:
             break
-        # if not done:
-        #     cumulative_reward -= (1. - reward)
-        # else:
-        #     cumulative_reward -= (1. - reward) * (episode_length - i)
-        #     done_time = i
-        #    break
 
     return {
         "reward": cumulative_reward,
@@ -50,7 +44,23 @@ def evaluate_lgp_genome(genome: jnp.ndarray,
                         episode_length: int = 42,
                         new_policy=None,
                         inner_evaluator: Callable = _evaluate_program) -> Dict:
+
     env.set_opponent_policy(new_policy=new_policy)
-    val_ = inner_evaluator(genome_to_lgp_program(genome, config), config["n_registers"], env, episode_length)
-    # print(val_)
-    return val_
+
+    total_reward = 0.
+    min_final_percentage = 1.
+
+    for _ in range(5):
+        performances = inner_evaluator(genome_to_lgp_program(genome, config), config["n_registers"], env, episode_length)
+
+        total_reward += performances['reward']
+        min_final_percentage = min(min_final_percentage, performances['final_percentage'])
+
+    mean_reward = np.median(total_reward)
+
+    return {
+        'reward': mean_reward,
+        'done': performances['done'],  # Assuming 'done' and 'dead_time' don't change
+        'dead_time': performances['dead_time'],
+        'final_percentage': min_final_percentage
+    }
