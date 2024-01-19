@@ -1,5 +1,6 @@
 import os
 import time
+import argparse
 from typing import Tuple, Dict
 from multiprocessing import Pool
 import numpy as np
@@ -39,19 +40,27 @@ def evaluate_genomes(genomes_array: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarr
 
 
 if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Run GP evolution experiments.')
+    parser.add_argument('--seed', type=int, help='Seed for the experiment', default=0)
+    parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=100)
+    parser.add_argument('--greedy_improved', type=int, help='Percentage for improved greedy strategy', default=0)
+
+    args = parser.parse_args()
+
     config = {
         "n_rows": 20,
         "n_extra_registers": 5,
-        "seed": 4,
-        "n_individuals": 50,
+        "seed": args.seed,
+        "n_individuals": 100,
         "solver": "lgp",
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
         "p_mut_functions": 0.01,
-        "n_generations": 50,
+        "n_generations": 100,
         "yellow_strategy": {
-            "greedy": 10,
-            "greedy_improved": 90
+            "greedy": args.greedy,
+            "greedy_improved": args.greedy_improved
         },
         "selection": {
             "elite_size": 10,
@@ -92,7 +101,7 @@ if __name__ == '__main__':
                                   weights_mutation_function=weights_mutation_function)
 
     csv_logger = CSVLogger(
-        filename=f"results/{run_name}/metrics.csv",
+        filename=f"results/{run_name}/res_{yellow_strategy['greedy']}_{yellow_strategy['greedy_improved']}.csv",
         header=["generation", "max_fitness", "mean_fitness",
                 "max_dead_time", "eval_time", "percentage"]
     )
