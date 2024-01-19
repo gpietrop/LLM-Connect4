@@ -42,16 +42,16 @@ if __name__ == '__main__':
     config = {
         "n_rows": 20,
         "n_extra_registers": 5,
-        "seed": 1,
-        "n_individuals": 100,
+        "seed": 0,
+        "n_individuals": 500,
         "solver": "lgp",
         "p_mut_lhs": 0.01,
         "p_mut_rhs": 0.01,
         "p_mut_functions": 0.01,
-        "n_generations": 50,
+        "n_generations": 100,
         "yellow_strategy": {
-            "greedy": 100,
-            "greedy_improved": 0
+            "greedy": 0,
+            "greedy_improved": 100
         },
         "selection": {
             "elite_size": 10,
@@ -117,7 +117,7 @@ if __name__ == '__main__':
             "percentage": np.mean(percentages)
         }
         csv_logger.log(metrics)
-        print(f"\n mean fitness {np.mean(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}%")
+        print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}%")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -164,7 +164,7 @@ if __name__ == '__main__':
             "percentage": np.mean(percentages)
         }
         csv_logger.log(metrics)
-        print(f"\n mean fitness {np.mean(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}")
+        print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2)*100}")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)

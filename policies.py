@@ -61,9 +61,6 @@ class GreedyPolicy(object):
             self.env = env
 
     def get_action(self, obs):
-        # if self.env is None:
-        #     print("Environment is None in RandomPolicy")   ### BUG
-        #     return 1
         my_perspective = self.env.player_turn
         new_env = copy_env(self.env)
 
@@ -77,7 +74,6 @@ class GreedyPolicy(object):
             # print("obs", obs)
             new_env.set_board_state(obs)  # Assuming set_board_state sets up the board from the observation
             new_env.board_state.resize((6, 6))
-            # print("new state", new_env.board_state.resize((6, 6)))
             new_env.set_player_turn(my_perspective)
             _, reward, _, _ = new_env.step(move)
 
@@ -85,6 +81,7 @@ class GreedyPolicy(object):
 
             if reward[0] > best_score:
                 best_score = reward[0]
+                # print(best_score)
                 best_move = move
 
         new_env.close()
@@ -98,7 +95,7 @@ class ImprovedGreedyPolicy(object):
     def __init__(self):
         self.env = None
         self.lookahead_depth = 1  # Adjust this for deeper lookahead
-        self.randomness_factor = 0.1  # 10% chance to make a random move
+        self.randomness_factor = 0.0  # 10% chance to make a random move
 
     def reset(self, env):
         if hasattr(env, 'env'):
