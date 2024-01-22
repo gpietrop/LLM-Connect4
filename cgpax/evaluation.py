@@ -24,12 +24,12 @@ def _evaluate_program(program: Callable, program_state_size: int, env: gym.Env,
         selected_action = jnp.argmax(actions) % 6
         # print(selected_action)
         obs, total_reward, done, info = env.step(selected_action)  # Make sure action is an integer
-        # print(obs.reshape((6, 6)))
 
         final_percentage = total_reward[1]
         cumulative_reward += total_reward[0]
         # print(cumulative_reward)
         if done:
+            # print(obs.reshape((6, 6)))
             break
 
     return {
@@ -52,7 +52,7 @@ def evaluate_lgp_genome(genome: jnp.ndarray,
     total_reward = []
     min_final_percentage = 1.
 
-    for _ in range(5):
+    for _ in range(1):
         performances = inner_evaluator(genome_to_lgp_program(genome, config), config["n_registers"], env, episode_length)
 
         total_reward.append(performances['reward'])

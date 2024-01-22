@@ -22,7 +22,7 @@ class Connect4Env(gym.Env):
                  board_size=6,  # Set board size to 6x6
                  initial_rand_steps=0,
                  seed=0,
-                 sudden_death_on_invalid_move=True,
+                 sudden_death_on_invalid_move=False,
                  render_in_step=False,
                  num_disk_as_reward=False,
                  possible_actions_in_obs=False):
@@ -301,7 +301,7 @@ class Connect4BaseEnv(gym.Env):
         reward = 0
         is_winner = 0
         if winner == -self.player_turn:
-            reward = 5  # Won the game
+            reward = 10  # Won the game
             is_winner = 1
         elif winner == NO_DISK:
             if self._is_progressing_towards_win_2(self.player_turn):  # it was self.player_turn
@@ -309,9 +309,9 @@ class Connect4BaseEnv(gym.Env):
                     reward = 0.6  # Making progress towards win
                 else:
                     reward = 0.3
-            # if self._is_progressing_towards_win_3(-self.player_turn):  # it was -self.player_turn
+            if self._is_progressing_towards_win_3(-self.player_turn):  # it was -self.player_turn
                 # print(self.player_turn)
-            #     reward = -0.3  # Opponent is making progress
+                reward = -0.5  # Opponent is making progress
         else:
             # print(f"we are {self.player_turn} and we lose")
             reward = 0  # Lost the game

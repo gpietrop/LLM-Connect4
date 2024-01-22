@@ -42,11 +42,11 @@ def evaluate_genomes(genomes_array: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarr
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Run GP evolution experiments.')
-    parser.add_argument('--seed', type=int, help='Seed for the experiment', default=0)
-    parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=33)
+    parser.add_argument('--seed', type=int, help='Seed for the experiment', default=1)
+    parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=0)
     parser.add_argument('--greedy_intermediate', type=int, help='Percentage for intermediate greedy strategy',
-                        default=33)
-    parser.add_argument('--greedy_improved', type=int, help='Percentage for improved greedy strategy', default=33)
+                        default=0)
+    parser.add_argument('--greedy_improved', type=int, help='Percentage for improved greedy strategy', default=100)
     parser.add_argument('--adaptive', type=bool, help='Adaptive change of policy', default=False)
 
     args = parser.parse_args()
@@ -55,21 +55,21 @@ if __name__ == '__main__':
         "n_rows": 20,
         "n_extra_registers": 5,
         "seed": args.seed,
-        "n_individuals": 10,
+        "n_individuals": 50,
         "solver": "lgp",
         "p_mut_lhs": 0.3,
         "p_mut_rhs": 0.1,
         "p_mut_functions": 0.1,
-        "n_generations": 10,
+        "n_generations": 100,
         "yellow_strategy": {
             "greedy": args.greedy,
             "greedy_intermediate": args.greedy_intermediate,
             "greedy_improved": args.greedy_improved
         },
         "selection": {
-            "elite_size": 10,
+            "elite_size": 5,
             "type": "tournament",
-            "tour_size": 3
+            "tour_size": 2
         },
         "survival": "truncation",
         "crossover": False,
@@ -138,7 +138,7 @@ if __name__ == '__main__':
         }
         csv_logger.log(metrics)
         # print(np.mean(percentages))
-        print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2) * 100}%")
+        # print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2) * 100}%")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -183,7 +183,7 @@ if __name__ == '__main__':
 
         # Log metrics
         metrics = {
-            "generation": _generation,
+            "generation": _generation + n_greedy_generations,
             "max_fitness": max(fitnesses),
             "mean_fitness": np.mean(fitnesses),
             "max_dead_time": max(dead_times),
@@ -192,7 +192,7 @@ if __name__ == '__main__':
         }
         csv_logger.log(metrics)
         # print(np.mean(percentages))
-        print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2) * 100}%")
+        # print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2) * 100}%")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -237,7 +237,7 @@ if __name__ == '__main__':
 
         # Log metrics
         metrics = {
-            "generation": _generation + n_greedy_generations,
+            "generation": _generation + n_greedy_generations + n_greedy_intermediate_generations,
             "max_fitness": max(fitnesses),
             "mean_fitness": np.mean(fitnesses),
             "max_dead_time": max(dead_times),
@@ -245,7 +245,7 @@ if __name__ == '__main__':
             "percentage": np.mean(percentages)
         }
         csv_logger.log(metrics)
-        print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2) * 100}")
+        # print(f"\n best fitness {max(fitnesses)} \t percentage win: {np.round(np.mean(percentages), 2) * 100}")
 
         # Parent selection
         rnd_key, select_key = random.split(rnd_key, 2)
@@ -287,7 +287,7 @@ if __name__ == '__main__':
                np.array(fitnesses), fmt='%s')
 
     # Render and evaluate the best genome
-    connect4_env.render()
+    # connect4_env.render()
     best_genome = genomes[jnp.argmax(fitnesses)]
     jnp.save(f"{dir_name}/{run_name}/best_genome_{yellow_strategy['greedy']}_{yellow_strategy['greedy_intermediate']}_{yellow_strategy['greedy_improved']}.npy",
              best_genome)

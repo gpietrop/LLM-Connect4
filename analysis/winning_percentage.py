@@ -5,13 +5,13 @@ import glob
 import os
 
 
-def histogram_final_percentage(seeds):
+def histogram_final_percentage(seeds, n_generations=100, n_individuals=50, adaptive=False):
     # Initialize a dictionary to store the count of final percentages greater than 0.01
     final_percentage_counts = {}
 
     # Iterate over each seed
     for my_seed in seeds:
-        directory_path = os.path.join(os.getcwd(), f'../results/connect4_trial_{my_seed}')
+        directory_path = os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
         metrics_files = glob.glob(os.path.join(directory_path, 'res_*.csv'))
 
         # Loop through each file
@@ -43,5 +43,5 @@ def histogram_final_percentage(seeds):
 
 
 # Example usage
-seeds = [1, 2, 3, 4, 5, 6, 7]  # Replace with your actual seeds
+seeds = range(8)  # Replace with your actual seeds
 histogram_final_percentage(seeds)

@@ -136,8 +136,13 @@ class IntermediateGreedyPolicy(object):
 
             # If the opponent can win with this move, immediately return this move to block the opponent.
             # print(opp_reward)
-            if opp_reward[1] == 1 and random.random() < self.blocking_chance:
-                return move  # Prioritize blocking over other strategies
+            if opp_reward[0] > 0.6 and random.random() < self.blocking_chance:  # mean the opposite win that turn
+                # return opp_move
+                best_score = 100
+                best_move = opp_move
+
+            # if opp_reward[1] == 1 and random.random() < self.blocking_chance:
+            #    return move  # Prioritize blocking over other strategies
 
             # Evaluate for best move
             if reward[0] > best_score:
@@ -201,10 +206,12 @@ class ImprovedGreedyPolicy(object):
                 _, opp_reward, _, _ = new_env.step(opp_move)
 
                 # If the opponent can win next turn, block that move
-                print(opp_reward)
-                if opp_reward[1] == 1:  # mean the opposite win that turn
+                # print(opp_reward)
+                if opp_reward[0] > 0.6:  # mean the opposite win that turn
+                    # return opp_move
+                    best_score = 100
                     best_move = opp_move
-                    best_score = 5  # Blocking move has priority  FORSE QUA METTO RETURN MOVE???
+                    # Blocking move has priority  FORSE QUA METTO RETURN MOVE??? PRIMA ERA 5 E CE LA FCEVA
 
         new_env.close()
 
