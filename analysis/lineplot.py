@@ -15,9 +15,9 @@ import matplotlib.pyplot as plt
 import re
 
 
-def lp_fitness(my_seed):
+def lp_fitness(my_seed, n_generations=100, n_individuals=10, adaptive=False):
     # Path to the directory containing the metrics files
-    directory_path = os.path.join(os.getcwd(), f'../results/connect4_trial_{my_seed}')
+    directory_path = os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
     metrics_files = glob.glob(os.path.join(directory_path, 'res_*.csv'))
 
     # Setting up the plot
@@ -31,10 +31,17 @@ def lp_fitness(my_seed):
         sns.lineplot(x='generation', y='max_fitness', data=data, label=f'{label} - Max Fitness')
 
     # Adding title and labels
-    plt.title('Mean Fitness and Max Fitness Across Generations')
-    plt.xlabel('Generation')
-    plt.ylabel('Fitness')
+    plt.title(f'Max Fitness Across Generations for Seeds {my_seed}', fontsize=15)
+    plt.ylim(bottom=-2)
+    plt.ylim(top=12)
+    plt.xlabel('Generation', fontsize=13)
+    plt.ylabel('Fitness', fontsize=13)
     plt.legend()
+
+    plt.legend(loc='upper left', bbox_to_anchor=(1, 1))
+
+    # Improving the layout
+    plt.tight_layout()
 
     # Save and show the plot
     plt.savefig(os.path.join(directory_path, 'lp_fitness.png'))
@@ -103,4 +110,4 @@ def lp_fitness_statistical(seeds, n_generations=100, n_individuals=10, adaptive=
 
 if __name__ == '__main__':
     # lp_fitness_statistical([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    lp_fitness_statistical([9], n_generations=100, n_individuals=50)
+    lp_fitness(4, n_generations=200, n_individuals=50)

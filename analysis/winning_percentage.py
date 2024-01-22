@@ -43,5 +43,5 @@ def histogram_final_percentage(seeds, n_generations=100, n_individuals=50, adapt
 
 
 # Example usage
-seeds = range(8)  # Replace with your actual seeds
-histogram_final_percentage(seeds)
+seeds = range(4)  # Replace with your actual seeds
+histogram_final_percentage(seeds, n_generations=200, n_individuals=50)
