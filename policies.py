@@ -139,7 +139,7 @@ class IntermediateGreedyPolicy(object):
             if opp_reward[0] > 0.6 and random.random() < self.blocking_chance:  # mean the opposite win that turn
                 # return opp_move
                 best_score = 100
-                best_move = opp_move
+                best_move = move
 
             # if opp_reward[1] == 1 and random.random() < self.blocking_chance:
             #    return move  # Prioritize blocking over other strategies
