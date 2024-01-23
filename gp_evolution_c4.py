@@ -43,10 +43,12 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Run GP evolution experiments.')
     parser.add_argument('--seed', type=int, help='Seed for the experiment', default=1)
-    parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=0)
+    parser.add_argument('--n_individuals', type=int, help='Seed for the experiment', default=10)
+    parser.add_argument('--n_generations', type=int, help='Seed for the experiment', default=10)
+    parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=100)
     parser.add_argument('--greedy_intermediate', type=int, help='Percentage for intermediate greedy strategy',
                         default=0)
-    parser.add_argument('--greedy_improved', type=int, help='Percentage for improved greedy strategy', default=100)
+    parser.add_argument('--greedy_improved', type=int, help='Percentage for improved greedy strategy', default=0)
     parser.add_argument('--adaptive', type=bool, help='Adaptive change of policy', default=False)
 
     args = parser.parse_args()
@@ -55,12 +57,12 @@ if __name__ == '__main__':
         "n_rows": 20,
         "n_extra_registers": 5,
         "seed": args.seed,
-        "n_individuals": 50,
+        "n_individuals": args.n_individuals,
         "solver": "lgp",
         "p_mut_lhs": 0.3,
         "p_mut_rhs": 0.1,
         "p_mut_functions": 0.1,
-        "n_generations": 100,
+        "n_generations": args.n_generations,
         "yellow_strategy": {
             "greedy": args.greedy,
             "greedy_intermediate": args.greedy_intermediate,
