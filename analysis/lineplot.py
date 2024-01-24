@@ -49,13 +49,15 @@ def lp_fitness(my_seed, n_generations=100, n_individuals=10, adaptive=False):
     plt.close()
 
 
-def lp_fitness_statistical(seeds, n_generations=100, n_individuals=10, adaptive=False):
+def lp_fitness_statistical(seeds, n_generations=100, n_individuals=50, adaptive=False):
     # Initialize a dictionary to store data from each file across seeds
     aggregated_data = {}
 
     # Iterate over each seed
     for my_seed in seeds:
-        directory_path = os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
+        # print(os.getcwd())
+        directory_path = os.path.join(os.getcwd(), f'/home/alfa/Desktop/LLM-Connect4-MinMax/results/results_50_100_False/connect4_trial_1')
+
         metrics_files = glob.glob(os.path.join(directory_path, 'res_*.csv'))
 
         # Loop through each file
@@ -103,7 +105,7 @@ def lp_fitness_statistical(seeds, n_generations=100, n_individuals=10, adaptive=
     plt.tight_layout()
 
     # Save and show the plot
-    plt.savefig(os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/lp_fitness_mean.png'))
+    # plt.savefig(os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/lp_fitness_mean.png'))
     plt.show()
     plt.close()
 

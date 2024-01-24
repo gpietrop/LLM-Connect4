@@ -67,30 +67,24 @@ class MinimaxPolicy(object):
             new_env = copy_env(self.env)
             new_env.step(action)
             # Call the minimax function
-            score = self.minimax(new_env, self.depth, False)
+            score = self.minimax(new_env, self.depth)
             if score > best_score:
                 best_score = score
                 best_action = action
         return best_action
 
-    def minimax(self, env, depth, is_maximizing_player):
+    def minimax(self, env, depth, obs):
         # print(env.terminated)
         if depth == 0 or env.terminated:
             return env.calculate_reward(-1)[0]
 
-        if is_maximizing_player:
-            best_score = -float('inf')
-            for action in env.possible_moves:
-                new_env = copy_env(env)
-                new_env.step(action)
-                score = self.minimax(new_env, depth - 1, False)
-                best_score = max(best_score, score)
-            return best_score
-        else:
-            best_score = float('inf')
-            for action in env.possible_moves:
-                new_env = copy_env(env)
-                new_env.step(action)
-                score = self.minimax(new_env, depth - 1, True)
-                best_score = min(best_score, score)
-            return best_score
+        best_score = float('inf')
+        for action in env.possible_moves:
+            new_env = copy_env(env)
+            new_env.reset()
+            new_env.set_board_state(obs)
+            new_env.board_state.resize((6, 6))  # Assuming a 6x6 board
+            new_obs, _, _, _ = new_env.step(action)
+            score = self.minimax(new_env, depth - 1, new_obs)
+            best_score = min(best_score, score)
+        return best_score

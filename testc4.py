@@ -2,7 +2,7 @@ import gym
 import numpy as np
 
 # Assuming policies.py and your Connect4Env class are in the same directory
-from policies import GreedyPolicy
+from policies import MinimaxPolicy
 from c4_gym import Connect4Env, RED_DISK, YELLOW_DISK
 
 
@@ -32,7 +32,7 @@ def get_human_move(possible_moves):
 
 def main():
     # Initialize the environment
-    env = Connect4Env(yellow_policy=GreedyPolicy ())  # Or any other policy you wish to play against
+    env = Connect4Env(yellow_policy=MinimaxPolicy())  # Or any other policy you wish to play against
     obs = env.reset()
     done = False
 
