@@ -2,8 +2,6 @@ import gym
 from gym import spaces
 import numpy as np
 
-from policies import RandomPolicy, GreedyPolicy
-
 # Constants for Connect 4 on a 6x6 board
 NO_DISK = 0
 RED_DISK = 1

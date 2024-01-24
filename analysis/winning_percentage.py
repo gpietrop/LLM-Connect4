@@ -34,14 +34,17 @@ def histogram_final_percentage(seeds, n_generations=100, n_individuals=50, adapt
     plt.figure(figsize=(10, 6))
     sns.barplot(x='File', y='Count > 0.01', data=histogram_data)
     plt.xticks(rotation=45)
-    plt.title('Count of Final Success Percentage > 0.01 for Different Evaluation Strategies', fontsize=15)
+    plt.title('Count of Final Success Percentage', fontsize=15)
     plt.xlabel('Evaluation Strategy', fontsize=13)
     plt.ylabel('Count', fontsize=13)
     plt.tight_layout()
+
+    plt.savefig(
+        os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/histogram_winning.png'))
     plt.show()
     plt.close()
 
 
 # Example usage
-seeds = range(4)  # Replace with your actual seeds
-histogram_final_percentage(seeds, n_generations=200, n_individuals=50)
+seeds = range(1, 21)  # Replace with your actual seeds
+histogram_final_percentage(seeds, n_generations=100, n_individuals=25)

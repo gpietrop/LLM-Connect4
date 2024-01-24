@@ -110,4 +110,6 @@ def lp_fitness_statistical(seeds, n_generations=100, n_individuals=10, adaptive=
 
 if __name__ == '__main__':
     # lp_fitness_statistical([1, 2, 3, 4, 5, 6, 7, 8, 9])
-    lp_fitness(4, n_generations=200, n_individuals=50)
+    # lp_fitness(12, n_generations=100, n_individuals=50)
+    range_seeds = range(1, 20)
+    lp_fitness_statistical(range_seeds, n_generations=100, n_individuals=50)
