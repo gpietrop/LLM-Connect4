@@ -20,34 +20,6 @@ def copy_env(env, mute_env=True):
     return new_env
 
 
-class RandomPolicy(object):
-    """Random policy for Connect 4."""
-
-    def __init__(self, seed=0):
-        self.rnd = np.random.RandomState(seed=seed)
-        self.env = None
-
-    def reset(self, env):
-        if hasattr(env, 'env'):
-            self.env = env.env
-        else:
-            self.env = env
-
-    def seed(self, seed):
-        self.rnd = np.random.RandomState(seed=seed)
-
-    def get_action(self, obs):
-        if self.env is None:
-            print("Environment is None in RandomPolicy")   ### BUG
-            return None
-        possible_moves = self.env.possible_moves
-        if len(possible_moves) == 0:
-            return None
-        ix = self.rnd.randint(0, len(possible_moves))
-        action = possible_moves[ix]
-        return action
-
-
 class GreedyPolicy(object):
     """Greedy policy for Connect 4."""
 
