@@ -7,10 +7,11 @@ from cgpax.utils import readable_lgp_program_from_genome
 import yaml
 from cgpax.evaluation import evaluate_lgp_genome
 from c4_gym import Connect4Env
+from policies import ImprovedGreedyPolicy
 from policies_validation import MinimaxPolicy
 
 
-def validation_policy(seeds=1, n_generations=100, n_individuals=50, ep1=0, ep2=0, ep3=100):
+def validation_policy(seeds=1, n_generations=10, n_individuals=10, ep1=0, ep2=0, ep3=100):
     rewards = []
     victories = []
 
@@ -25,8 +26,8 @@ def validation_policy(seeds=1, n_generations=100, n_individuals=50, ep1=0, ep2=0
 
         othello_env = Connect4Env(num_disk_as_reward=False)
 
-        # othello_env.render()
-        # othello_env.render_in_step = True
+        othello_env.render()
+        othello_env.render_in_step = True
 
         new_policy = MinimaxPolicy()
         reward = evaluate_lgp_genome(best_genome, config, othello_env, episode_length=42, new_policy=new_policy)
@@ -40,43 +41,11 @@ def validation_policy(seeds=1, n_generations=100, n_individuals=50, ep1=0, ep2=0
     return mean_reward, total_victories
 
 
-seeds = 10
+seeds = 1
 
 e1, e2, e3 = 0, 0, 100
 mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
 print(f"{e1}-{e2}-{e3} reward: {mean_reward}; victories: {total_victories}")
-
-
-e1, e2, e3 = 10, 0, 90
-mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
-print(f"{e1}-{e2}-{e3} reward: {mean_reward}; victories: {total_victories}")
-
-
-e1, e2, e3 = 10, 10, 80
-mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
-print(f"{e1}-{e2}-{e3} reward: {mean_reward}; victories: {total_victories}")
-
-
-e1, e2, e3 = 33, 33, 33
-mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
-print(f"{e1}-{e2}-{e3} reward: {mean_reward}; victories: {total_victories}")
-
-
-e1, e2, e3 = 0, 10, 90
-mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
-print(f"{e1}-{e2}-{e3} reward: {mean_reward}; victories: {total_victories}")
-
-
-e1, e2, e3 = 50, 0, 50
-mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
-print(f"{e1}-{e2}-{e3} reward: {mean_reward}; victories: {total_victories}")
-
-
-e1, e2, e3 = 0, 50, 50
-mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
-print(f"{e1}-{e2}-{e3} reward: {mean_reward}; victories: {total_victories}")
-
-
 
 
 

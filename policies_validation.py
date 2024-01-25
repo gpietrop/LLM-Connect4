@@ -51,7 +51,7 @@ class RandomPolicy(object):
 class MinimaxPolicy(object):
     """Minimax policy for Connect 4."""
 
-    def __init__(self, max_depth=1):
+    def __init__(self, max_depth=10):
         self.env = None
         self.max_depth = max_depth
 

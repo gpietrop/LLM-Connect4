@@ -130,7 +130,7 @@ class ImprovedGreedyPolicy(object):
 
     def __init__(self):
         self.env = None
-        self.lookahead_depth = 1  # Adjust this for deeper lookahead
+        self.lookahead_depth = 2  # Adjust this for deeper lookahead
         self.randomness_factor = 0.0  # 10% chance to make a random move
 
     def reset(self, env):
