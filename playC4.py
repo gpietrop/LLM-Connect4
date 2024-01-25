@@ -40,7 +40,7 @@ def validation_policy(seeds=1, n_generations=100, n_individuals=50, ep1=0, ep2=0
     return mean_reward, total_victories
 
 
-seeds = 26
+seeds = 10
 
 e1, e2, e3 = 0, 0, 100
 mean_reward, total_victories = validation_policy(seeds=seeds, ep1=e1, ep2=e2, ep3=e3)
