@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import re
 
 
-def lp_fitness(my_seed, n_generations=100, n_individuals=10, adaptive=False):
+def lp_fitness(my_seed, n_generations=100, n_individuals=50, adaptive=False):
     # Path to the directory containing the metrics files
     directory_path = os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
     metrics_files = glob.glob(os.path.join(directory_path, 'res_*.csv'))

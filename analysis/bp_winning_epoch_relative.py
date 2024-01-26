@@ -26,10 +26,11 @@ def boxplot_first_nonzero_percentage_with_median(seeds, n_generations=100, n_ind
 
             # Extract the first two numbers from the file name and sum them
             numbers_in_filename = [int(num) for num in re.findall(r'\d+', file_name)]
-            threshold = sum(numbers_in_filename[:2]) + 1
+            threshold = sum(numbers_in_filename[:2])
 
             # Find the first non-zero index after the threshold
             nonzero_index = data.index[(data['percentage'] > 0.0) & (data.index > threshold)].min()
+            nonzero_index = nonzero_index - threshold
             if math.isnan(nonzero_index):
                 nonzero_index = None
 
@@ -41,7 +42,7 @@ def boxplot_first_nonzero_percentage_with_median(seeds, n_generations=100, n_ind
 
     # Convert the list to a DataFrame
     boxplot_data = pd.DataFrame(nonzero_indices, columns=['File', 'First Nonzero Index After Threshold'])
-    boxplot_data.to_csv(f'../results/results_{n_individuals}_{n_generations}_{adaptive}/boxplot_convergence.csv', index=False)
+    boxplot_data.to_csv(f'../results/results_{n_individuals}_{n_generations}_{adaptive}/boxplot_convergence_relative.csv', index=False)
     # print(boxplot_data)
 
     # Plotting
@@ -73,7 +74,7 @@ def boxplot_first_nonzero_percentage_with_median(seeds, n_generations=100, n_ind
     plt.tight_layout()
 
     plt.savefig(
-        os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/bp_winning.png'))
+        os.path.join(os.getcwd(), f'../results/results_{n_individuals}_{n_generations}_{adaptive}/bp_winning_relative.png'))
     plt.show()
     plt.close()
 
