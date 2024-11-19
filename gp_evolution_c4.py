@@ -20,7 +20,7 @@ from cgpax.utils import CSVLogger
 
 from c4_gym import Connect4Env
 from tqdm import tqdm
-from policies import GreedyPolicy, IntermediateGreedyPolicy, ImprovedGreedyPolicy
+# from policies import GreedyPolicy, IntermediateGreedyPolicy, ImprovedGreedyPolicy
 
 
 def evaluate_genomes(genomes_array: jnp.ndarray) -> Tuple[jnp.ndarray, jnp.ndarray, jnp.ndarray]:
@@ -45,6 +45,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, help='Seed for the experiment', default=1)
     parser.add_argument('--n_individuals', type=int, help='Seed for the experiment', default=10)
     parser.add_argument('--n_generations', type=int, help='Seed for the experiment', default=10)
+    parser.add_argument('--policy_version', type=str, choices=['original', '31_8B', '31_405B'],
+                        help='Policy version to use', default='original')
     parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=100)
     parser.add_argument('--greedy_intermediate', type=int, help='Percentage for intermediate greedy strategy',
                         default=0)
@@ -52,6 +54,18 @@ if __name__ == '__main__':
     parser.add_argument('--adaptive', type=bool, help='Adaptive change of policy', default=False)
 
     args = parser.parse_args()
+
+    if args.policy_version == 'original':
+        from policies import GreedyPolicy, IntermediateGreedyPolicy, ImprovedGreedyPolicy
+    if args.policy_version == '31_8B':
+        from policies_31_8B import EasyPolicy as GreedyPolicy
+        from policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
+        from policies_31_8B import HardPolicy as ImprovedGreedyPolicy
+    if args.policy_version == '31_405B':
+        from policies_31_405B import EasyPolicy as GreedyPolicy
+        from policies_31_405B import MediumPolicy as IntermediateGreedyPolicy
+        from policies_31_405B import HardPolicy as ImprovedGreedyPolicy
+
 
     config = {
         "n_rows": 20,
@@ -79,9 +93,9 @@ if __name__ == '__main__':
         "adaptive": args.adaptive
     }
 
-    dir_name = f'results/results_{config["n_individuals"]}_{config["n_generations"]}_{config["adaptive"]}'
+    dir_name = f'results/{args.policy_version}/results_{config["n_individuals"]}_{config["n_generations"]}_{config["adaptive"]}'
     if not os.path.exists(dir_name):
-        os.mkdir(dir_name)
+        os.makedirs(dir_name)
 
     run_name = f"{config['run_name']}_{config['seed']}"
     os.makedirs(f"{dir_name}/{run_name}", exist_ok=True)
