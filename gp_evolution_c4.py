@@ -45,7 +45,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, help='Seed for the experiment', default=1)
     parser.add_argument('--n_individuals', type=int, help='Seed for the experiment', default=10)
     parser.add_argument('--n_generations', type=int, help='Seed for the experiment', default=10)
-    parser.add_argument('--policy_version', type=str, choices=['original', '31_8B', '31_405B'],
+    parser.add_argument('--policy_version', type=str, choices=['original', '31_8B', '31_405B', '31_8B_GPT'],
                         help='Policy version to use', default='original')
     parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=100)
     parser.add_argument('--greedy_intermediate', type=int, help='Percentage for intermediate greedy strategy',
@@ -58,6 +58,10 @@ if __name__ == '__main__':
     if args.policy_version == 'original':
         from policies import GreedyPolicy, IntermediateGreedyPolicy, ImprovedGreedyPolicy
     if args.policy_version == '31_8B':
+        from policies_31_8B import EasyPolicy as GreedyPolicy
+        from policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
+        from policies_31_8B import HardPolicy as ImprovedGreedyPolicy
+    if args.policy_version == '31_8B_GPT':
         from policies_31_8B import EasyPolicy as GreedyPolicy
         from policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
         from policies_31_8B import HardPolicy as ImprovedGreedyPolicy
