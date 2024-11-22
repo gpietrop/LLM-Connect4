@@ -1,7 +1,7 @@
 #!/bin/bash
 
 n_generations=100
-n_individuals=25
+n_individuals=50
 pol="31_405B_NEW"
 
 for seed in {1..30}; do
