@@ -45,7 +45,8 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, help='Seed for the experiment', default=1)
     parser.add_argument('--n_individuals', type=int, help='Seed for the experiment', default=10)
     parser.add_argument('--n_generations', type=int, help='Seed for the experiment', default=8)
-    parser.add_argument('--policy_version', type=str, choices=['original', '31_8B', '31_405B', '31_405B_NEW', '31_8B_GPT'],
+    parser.add_argument('--policy_version', type=str, choices=['original', '31_8B', '31_405B', '31_405B_NEW',
+                                                               '31_8B_NEW', '31_8B_GPT'],
                         help='Policy version to use', default='31_405B_NEW')
     parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=100)
     parser.add_argument('--greedy_intermediate', type=int, help='Percentage for intermediate greedy strategy',
