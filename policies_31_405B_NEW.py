@@ -423,3 +423,172 @@ class MediumPolicy():
             elif row[col] != 0:
                 return False
         return False
+
+
+class ExpertPolicy(HardPolicy):
+    """Expert policy for Connect 4."""
+
+    def __init__(self):
+        self.transposition_table = {}
+
+    def get_action(self, obs):
+        possible_moves = self.env.possible_moves
+        board_state = self.env.board_state.copy()
+        board_size = self.env.board_size
+        player_turn = self.env.player_turn
+
+        # Define the evaluation function
+        def evaluate_board(board):
+            score = 0
+            # Check horizontal locations for win
+            for row in board:
+                for col in range(len(row) - 3):
+                    if row[col] == player_turn and row[col+1] == player_turn and row[col+2] == player_turn and row[col+3] == player_turn:
+                        score += 10000
+                    elif row[col] == player_turn and row[col+1] == player_turn and row[col+2] == player_turn and row[col+3] == 0:
+                        score += 1000
+                    elif row[col] == player_turn and row[col+1] == player_turn and row[col+2] == 0 and row[col+3] == player_turn:
+                        score += 1000
+                    elif row[col] == player_turn and row[col+1] == 0 and row[col+2] == player_turn and row[col+3] == player_turn:
+                        score += 1000
+                    elif row[col] == 0 and row[col+1] == player_turn and row[col+2] == player_turn and row[col+3] == player_turn:
+                        score += 1000
+            # Check vertical locations for win
+            for col in range(len(board[0])):
+                for row in range(len(board) - 3):
+                    if board[row][col] == player_turn and board[row+1][col] == player_turn and board[row+2][col] == player_turn and board[row+3][col] == player_turn:
+                        score += 10000
+                    elif board[row][col] == player_turn and board[row+1][col] == player_turn and board[row+2][col] == player_turn and board[row+3][col] == 0:
+                        score += 1000
+                    elif board[row][col] == player_turn and board[row+1][col] == player_turn and board[row+2][col] == 0 and board[row+3][col] == player_turn:
+                        score += 1000
+                    elif board[row][col] == player_turn and board[row+1][col] == 0 and board[row+2][col] == player_turn and board[row+3][col] == player_turn:
+                        score += 1000
+                    elif board[row][col] == 0 and board[row+1][col] == player_turn and board[row+2][col] == player_turn and board[row+3][col] == player_turn:
+                        score += 1000
+            # Check positively sloped diagonals
+            for row in range(len(board) - 3):
+                for col in range(len(board[0]) - 3):
+                    if board[row][col] == player_turn and board[row+1][col+1] == player_turn and board[row+2][col+2] == player_turn and board[row+3][col+3] == player_turn:
+                        score += 10000
+                    elif board[row][col] == player_turn and board[row+1][col+1] == player_turn and board[row+2][col+2] == player_turn and board[row+3][col+3] == 0:
+                        score += 1000
+                    elif board[row][col] == player_turn and board[row+1][col+1] == player_turn and board[row+2][col+2] == 0 and board[row+3][col+3] == player_turn:
+                        score += 1000
+                    elif board[row][col] == player_turn and board[row+1][col+1] == 0 and board[row+2][col+2] == player_turn and board[row+3][col+3] == player_turn:
+                        score += 1000
+                    elif board[row][col] == 0 and board[row+1][col+1] == player_turn and board[row+2][col+2] == player_turn and board[row+3][col+3] == player_turn:
+                        score += 1000
+            # Check negatively sloped diagonals
+            for row in range(3, len(board)):
+                for col in range(len(board[0]) - 3):
+                    if board[row][col] == player_turn and board[row-1][col+1] == player_turn and board[row-2][col+2] == player_turn and board[row-3][col+3] == player_turn:
+                        score += 10000
+                    elif board[row][col] == player_turn and board[row-1][col+1] == player_turn and board[row-2][col+2] == player_turn and board[row-3][col+3] == 0:
+                        score += 1000
+                    elif board[row][col] == player_turn and board[row-1][col+1] == player_turn and board[row-2][col+2] == 0 and board[row-3][col+3] == player_turn:
+                        score += 1000
+                    elif board[row][col] == player_turn and board[row-1][col+1] == 0 and board[row-2][col+2] == player_turn and board[row-3][col+3] == player_turn:
+                        score += 1000
+                    elif board[row][col] == 0 and board[row-1][col+1] == player_turn and board[row-2][col+2] == player_turn and board[row-3][col+3] == player_turn:
+                        score += 1000
+            # Check for blocking opponent's win
+            for row in board:
+                for col in range(len(row) - 3):
+                    if row[col] == -player_turn and row[col+1] == -player_turn and row[col+2] == -player_turn and row[col+3] == -player_turn:
+                        score -= 10000
+                    elif row[col] == -player_turn and row[col+1] == -player_turn and row[col+2] == -player_turn and row[col+3] == 0:
+                        score -= 1000
+                    elif row[col] == -player_turn and row[col+1] == -player_turn and row[col+2] == 0 and row[col+3] == -player_turn:
+                        score -= 1000
+                    elif row[col] == -player_turn and row[col+1] == 0 and row[col+2] == -player_turn and row[col+3] == -player_turn:
+                        score -= 1000
+                    elif row[col] == 0 and row[col+1] == -player_turn and row[col+2] == -player_turn and row[col+3] == -player_turn:
+                        score -= 1000
+            for col in range(len(board[0])):
+                for row in range(len(board) - 3):
+                    if board[row][col] == -player_turn and board[row+1][col] == -player_turn and board[row+2][col] == -player_turn and board[row+3][col] == -player_turn:
+                        score -= 10000
+                    elif board[row][col] == -player_turn and board[row+1][col] == -player_turn and board[row+2][col] == -player_turn and board[row+3][col] == 0:
+                        score -= 1000
+                    elif board[row][col] == -player_turn and board[row+1][col] == -player_turn and board[row+2][col] == 0 and board[row+3][col] == -player_turn:
+                        score -= 1000
+                    elif board[row][col] == -player_turn and board[row+1][col] == 0 and board[row+2][col] == -player_turn and board[row+3][col] == -player_turn:
+                        score -= 1000
+                    elif board[row][col] == 0 and board[row+1][col] == -player_turn and board[row+2][col] == -player_turn and board[row+3][col] == -player_turn:
+                        score -= 1000
+            for row in range(len(board) - 3):
+                for col in range(len(board[0]) - 3):
+                    if board[row][col] == -player_turn and board[row+1][col+1] == -player_turn and board[row+2][col+2] == -player_turn and board[row+3][col+3] == -player_turn:
+                        score -= 10000
+                    elif board[row][col] == -player_turn and board[row+1][col+1] == -player_turn and board[row+2][col+2] == -player_turn and board[row+3][col+3] == 0:
+                        score -= 1000
+                    elif board[row][col] == -player_turn and board[row+1][col+1] == -player_turn and board[row+2][col+2] == 0 and board[row+3][col+3] == -player_turn:
+                        score -= 1000
+                    elif board[row][col] == -player_turn and board[row+1][col+1] == 0 and board[row+2][col+2] == -player_turn and board[row+3][col+3] == -player_turn:
+                        score -= 1000
+                    elif board[row][col] == 0 and board[row+1][col+1] == -player_turn and board[row+2][col+2] == -player_turn and board[row+3][col+3] == -player_turn:
+                        score -= 1000
+            for row in range(3, len(board)):
+                for col in range(len(board[0]) - 3):
+                    if board[row][col] == -player_turn and board[row-1][col+1] == -player_turn and board[row-2][col+2] == -player_turn and board[row-3][col+3] == -player_turn:
+                        score -= 10000
+                    elif board[row][col] == -player_turn and board[row-1][col+1] == -player_turn and board[row-2][col+2] == -player_turn and board[row-3][col+3] == 0:
+                        score -= 1000
+                    elif board[row][col] == -player_turn and board[row-1][col+1] == -player_turn and board[row-2][col+2] == 0 and board[row-3][col+3] == -player_turn:
+                        score -= 1000
+                    elif board[row][col] == -player_turn and board[row-1][col+1] == 0 and board[row-2][col+2] == -player_turn and board[row-3][col+3] == -player_turn:
+                        score -= 1000
+                    elif board[row][col] == 0 and board[row-1][col+1] == -player_turn and board[row-2][col+2] == -player_turn and board[row-3][col+3] == -player_turn:
+                        score -= 1000
+            return score
+
+        # Perform alpha-beta search
+        def alpha_beta_search(board, depth, alpha, beta, maximizing_player):
+            if depth == 0 or self.check_win(board, player_turn):
+                return evaluate_board(board)
+            if tuple(map(tuple, board)) in self.transposition_table:
+                return self.transposition_table[tuple(map(tuple, board))]
+            if maximizing_player:
+                value = -float('inf')
+                for move in self.get_possible_moves(board):
+                    next_board = board.copy()
+                    next_board = self.drop_piece(next_board, move, player_turn)
+                    value = max(value, alpha_beta_search(next_board, depth-1, alpha, beta, False))
+                    alpha = max(alpha, value)
+                    if alpha >= beta:
+                        break
+                self.transposition_table[tuple(map(tuple, board))] = value
+                return value
+            else:
+                value = float('inf')
+                for move in self.get_possible_moves(board):
+                    next_board = board.copy()
+                    next_board = self.drop_piece(next_board, move, -player_turn)
+                    value = min(value, alpha_beta_search(next_board, depth-1, alpha, beta, True))
+                    beta = min(beta, value)
+                    if beta <= alpha:
+                        break
+                self.transposition_table[tuple(map(tuple, board))] = value
+                return value
+
+        # Check if opponent is about to win and block their win
+        for move in possible_moves:
+            next_board = board_state.copy()
+            next_board = self.drop_piece(next_board, move, -player_turn)
+            if self.check_win(next_board, -player_turn):
+                return move
+
+        # Perform the search
+        best_move = None
+        best_score = -float('inf')
+        for move in possible_moves:
+            next_board = board_state.copy()
+            next_board = self.drop_piece(next_board, move, player_turn)
+            score = alpha_beta_search(next_board, 3, -float('inf'), float('inf'), False)
+            if score > best_score:
+                best_score = score
+                best_move = move
+
+        return best_move
+
