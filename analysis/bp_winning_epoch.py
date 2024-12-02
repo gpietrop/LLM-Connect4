@@ -71,12 +71,12 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, n_generations
     plt.tight_layout()
 
     plt.savefig(
-        os.path.join(os.getcwd(), f'../results/bp_{llm_model}_winning.png'))
+        os.path.join(os.getcwd(), f'../results/bp_{llm_model}_{n_generations}_{n_individuals}_winning.png'))
     plt.show()
     plt.close()
 
 
 # Example usage
 seeds = range(30)  # Replace with actual seed values
-llm_model = "31_405B_NEW"
-boxplot_first_nonzero_percentage_with_median(llm_model, seeds, n_generations=100, n_individuals=50)
+llm_model = "31_8B_NEW"
+boxplot_first_nonzero_percentage_with_median(llm_model, seeds, n_generations=100, n_individuals=100)
