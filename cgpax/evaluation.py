@@ -2,7 +2,7 @@ from typing import Callable, Dict
 import gym
 import numpy as np
 import jax.numpy as jnp
-from cgpax.encoding import genome_to_lgp_program
+from cgpax.encoding import genome_to_lgp_program, genome_to_cgp_program
 
 from policies import GreedyPolicy
 
@@ -54,6 +54,36 @@ def evaluate_lgp_genome(genome: jnp.ndarray,
 
     for _ in range(1):
         performances = inner_evaluator(genome_to_lgp_program(genome, config), config["n_registers"], env, episode_length)
+
+        total_reward.append(performances['reward'])
+        # print(performances['reward'])
+        min_final_percentage = min(min_final_percentage, performances['final_percentage'])
+
+    # print(total_reward)
+    mean_reward = np.median(total_reward)
+    # print(mean_reward)
+    return {
+        'reward': mean_reward,
+        'done': performances['done'],  # Assuming 'done' and 'dead_time' don't change
+        'dead_time': performances['dead_time'],
+        'final_percentage': min_final_percentage
+    }
+
+
+def evaluate_cgp_genome(genome: jnp.ndarray,
+                        config: Dict,
+                        env: gym.Env,
+                        episode_length: int = 42,
+                        new_policy=None,
+                        inner_evaluator: Callable = _evaluate_program) -> Dict:
+
+    env.set_opponent_policy(new_policy=new_policy)
+
+    total_reward = []
+    min_final_percentage = 1.
+
+    for _ in range(1):
+        performances = inner_evaluator(genome_to_cgp_program(genome, config), config["buffer_size"], env, episode_length)
 
         total_reward.append(performances['reward'])
         # print(performances['reward'])

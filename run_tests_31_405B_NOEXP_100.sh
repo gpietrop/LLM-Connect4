@@ -1,8 +1,8 @@
 #!/bin/bash
 
 n_generations=100
-n_individuals=50
-pol="original"
+n_individuals=100
+pol="31_405B_NEW"
 python_script="cgp_evolution_c4.py"
 
 for seed in {1..30}; do
@@ -18,6 +18,4 @@ for seed in {1..30}; do
         python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 33 --greedy_intermediate 33 --greedy_improved 33 --policy_version "$pol"
         # Add more lines for other combinations if needed
 done
-
-
 
