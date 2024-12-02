@@ -20,7 +20,7 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_g
                                       f'../results/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
         else:
             directory_path = os.path.join(os.getcwd(),
-                                          f'../cgp_results/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
+                                          f'../results_cgp/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
         metrics_files = glob.glob(os.path.join(directory_path, 'res_*.csv'))
 
         # Loop through each file
@@ -83,5 +83,5 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_g
 # Example usage
 seeds = range(30)  # Replace with actual seed values
 llm_model = "31_405B_NEW"
-gp_model = "cgp"
-boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=100)
+gp_model = "lgp"
+boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=101)
