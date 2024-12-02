@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, n_generations=100, n_individuals=25, adaptive=False):
+def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=25, adaptive=False):
     # Initialize a list to store the first index where percentage > 0 after a certain threshold
     nonzero_indices = []
     # Dictionary to count valid nonzero indices for each file
@@ -15,8 +15,12 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, n_generations
 
     # Iterate over each seed
     for my_seed in seeds:
-        directory_path = os.path.join(os.getcwd(),
+        if gp_model == "lgp":
+            directory_path = os.path.join(os.getcwd(),
                                       f'../results/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
+        else:
+            directory_path = os.path.join(os.getcwd(),
+                                          f'../cgp_results/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
         metrics_files = glob.glob(os.path.join(directory_path, 'res_*.csv'))
 
         # Loop through each file
@@ -71,12 +75,13 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, n_generations
     plt.tight_layout()
 
     plt.savefig(
-        os.path.join(os.getcwd(), f'../results/bp_{llm_model}_{n_generations}_{n_individuals}_winning.png'))
+        os.path.join(os.getcwd(), f'../results/bp_{gp_model}_{llm_model}_{n_generations}_{n_individuals}.png'))
     plt.show()
     plt.close()
 
 
 # Example usage
 seeds = range(30)  # Replace with actual seed values
-llm_model = "31_8B_NEW"
-boxplot_first_nonzero_percentage_with_median(llm_model, seeds, n_generations=100, n_individuals=100)
+llm_model = "31_405B_NEW"
+gp_model = "cgp"
+boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=100)
