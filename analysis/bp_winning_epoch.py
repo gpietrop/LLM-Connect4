@@ -57,11 +57,14 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_g
     y_limit = ax.get_ylim()[1]
     y_text_offset = (y_limit - y_max) * 0.1  # Offset the text by 10% of the range above the max value
 
-    # Annotate each box with the count of valid nonzero indices
+    # Annotate each box with the count of valid nonzero indices and their ratio
     for i, file in enumerate(boxplot_data['File'].unique()):
         count = valid_nonzero_counts.get(file, 0)
+        total = len(metrics_files)  # Total number of files processed
+        ratio = count / total if total > 0 else 0
+        annotation = f'{count}/{total}\n({ratio:.2%})'  # Format as 'count/total (percentage%)'
         # Adjust the y position so that the text does not overlap with the plot elements
-        ax.text(i, y_max + y_text_offset, f'{count}', horizontalalignment='center', size='small', color='black',
+        ax.text(i, y_max + y_text_offset, annotation, horizontalalignment='center', size='small', color='black',
                 weight='semibold')
 
     # Adjust the y-limit to accommodate the text annotations
