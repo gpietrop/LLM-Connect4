@@ -3,7 +3,7 @@ import pandas as pd
 from collections import defaultdict
 
 
-def process_csv_files_3_policies(input_dir, output_file, selected_seeds=None, min_generations=98):
+def process_csv_files_3_policies(input_dir, output_file, flag, selected_seeds=None, min_generations=98):
     grouped_results = defaultdict(list)  # Group results by x, y, z
 
     # Walk through all directories and subdirectories
@@ -47,6 +47,8 @@ def process_csv_files_3_policies(input_dir, output_file, selected_seeds=None, mi
                 # Check if there are any non-zero percentages
                 if not non_zero_percentage.empty:
                     first_win_generation = non_zero_percentage['generation'].iloc[0]
+                    if flag:
+                        first_win_generation -= (x + y)
                     grouped_results[(x, y, z)].append(first_win_generation)
                 else:
                     print(f"No winning found in file: {file_name}")
@@ -66,7 +68,7 @@ def process_csv_files_3_policies(input_dir, output_file, selected_seeds=None, mi
             output.write("\t".join(row) + "\n")
 
 
-def process_csv_files_4_policies(input_dir, output_file, selected_seeds=None, min_generations=98):
+def process_csv_files_4_policies(input_dir, output_file, flag, selected_seeds=None, min_generations=98):
     grouped_results = defaultdict(list)  # Group results by x, y, z
 
     # Walk through all directories and subdirectories
@@ -111,10 +113,11 @@ def process_csv_files_4_policies(input_dir, output_file, selected_seeds=None, mi
                 # Check if there are any non-zero percentages
                 if not non_zero_percentage.empty:
                     first_win_generation = non_zero_percentage['generation'].iloc[0]
+                    if flag:
+                        first_win_generation -= (x + y + e)
                     grouped_results[(x, y, e, z)].append(first_win_generation)
                 else:
-                    print(seed)
-                    print(f"No winning found in file: {file_name}")
+                    print(f"{seed:} No winning found in file: {file_name}")
 
     # Write the grouped results to a .txt file
     with open(output_file, "w") as output:
@@ -132,18 +135,26 @@ def process_csv_files_4_policies(input_dir, output_file, selected_seeds=None, mi
 
 
 # Usage
-selected_seeds = range(1, 31)  # Specify the seeds you want to include
-llm_model = "31_405B_NEW"
-gp_model = "lgp"
-n_individuals = 101
+selected_seeds = range(30)  # Replace with actual seed values
+n_individuals = 50
 n_generations = 100
+gp_model = "lgp"  # This should be set or determined earlier in your script
+llm_model = "31_405B_NEW"  # 31_405B_NEW
+flag_after_iteration_diff_policy = 0
+
+# Determine input directory based on the type of model
 if gp_model == "lgp":
     input_directory = os.path.join(os.getcwd(), f'../results/{llm_model}/results_{n_individuals}_{n_generations}_False/')
-if gp_model == "cgp":
+elif gp_model == "cgp":
     input_directory = os.path.join(os.getcwd(), f'../results_cgp/{llm_model}/results_{n_individuals}_{n_generations}_False/')
 
 # Construct the output file path
 output_txt = os.path.abspath(os.path.join(os.getcwd(), f"../tkz/{llm_model}_{gp_model}_{n_individuals}_c4-bp.txt"))
+if flag_after_iteration_diff_policy:
+    output_txt = os.path.abspath(os.path.join(os.getcwd(), f"../tkz_relative/{llm_model}_{gp_model}_{n_individuals}_c4-bp.txt"))
 
-# process_csv_files_3_policies(input_directory, output_txt, selected_seeds=selected_seeds)
-process_csv_files_4_policies(input_directory, output_txt, selected_seeds=selected_seeds)
+# Apply different processing functions based on the last digit of n_individuals
+if str(n_individuals).endswith("1"):
+    process_csv_files_4_policies(input_directory, output_txt, flag_after_iteration_diff_policy, selected_seeds=selected_seeds)
+else:
+    process_csv_files_3_policies(input_directory, output_txt, flag_after_iteration_diff_policy, selected_seeds=selected_seeds)
