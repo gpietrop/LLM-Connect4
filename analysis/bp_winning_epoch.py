@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=25, adaptive=False):
+def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds, gp_model, n_generations=100, n_individuals=25, adaptive=False):
     # Initialize a list to store the first index where percentage > 0 after a certain threshold
     nonzero_indices = []
     # Dictionary to count valid nonzero indices for each file
@@ -37,6 +37,8 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_g
             # Extract the first two numbers from the file name and sum them
             numbers_in_filename = [int(num) for num in re.findall(r'\d+', file_name)]
             threshold = sum(numbers_in_filename[:2]) + 1
+            if num_policies == 4:
+                threshold = sum(numbers_in_filename[:3]) + 1
 
             # Find the first non-zero index after the threshold
             nonzero_index = data.index[(data['percentage'] > 0.0) & (data.index > threshold)].min()
@@ -101,6 +103,7 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_g
 
 # Example usage
 seeds = range(30)  # Replace with actual seed values
-llm_model = "31_8B_NEW"  # "31_405B_NEW"
+llm_model = "original"  # "31_405B_NEW"
 gp_model = "lgp"
-boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=50)
+pol = 3
+boxplot_first_nonzero_percentage_with_median(pol, llm_model, seeds, gp_model, n_generations=100, n_individuals=100)
