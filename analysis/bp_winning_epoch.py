@@ -101,6 +101,6 @@ def boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_g
 
 # Example usage
 seeds = range(30)  # Replace with actual seed values
-llm_model = "original"  # "31_405B_NEW"
-gp_model = "cgp"
-boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=25)
+llm_model = "31_8B_NEW"  # "31_405B_NEW"
+gp_model = "lgp"
+boxplot_first_nonzero_percentage_with_median(llm_model, seeds, gp_model, n_generations=100, n_individuals=50)

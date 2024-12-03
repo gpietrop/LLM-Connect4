@@ -3,7 +3,7 @@ import pandas as pd
 from collections import defaultdict
 
 
-def process_csv_files(input_dir, output_file, selected_seeds=None, min_generations=99):
+def process_csv_files(input_dir, output_file, selected_seeds=None, min_generations=98):
     grouped_results = defaultdict(list)  # Group results by x, y, z
 
     # Walk through all directories and subdirectories
@@ -67,8 +67,16 @@ def process_csv_files(input_dir, output_file, selected_seeds=None, min_generatio
 
 
 # Usage
-selected_seeds = range(21)  # Specify the seeds you want to include
-llm_version = "GPT"  # Example version
-input_directory = os.getcwd() + f"/../results/results_25_100_False/"  # Replace with your directory path
-output_txt = f"{llm_version}_c4-bp.txt"  # Output file name
+selected_seeds = range(1, 31)  # Specify the seeds you want to include
+llm_model = "31_8B_NEW"
+gp_model = "lgp"
+n_individuals = 50
+n_generations = 100
+if gp_model == "lgp":
+    input_directory = os.path.join(os.getcwd(), f'../results/{llm_model}/results_{n_individuals}_{n_generations}_False/')
+if gp_model == "cgp":
+    input_directory = os.path.join(os.getcwd(), f'../results_cgp/{llm_model}/results_{n_individuals}_{n_generations}_False/')
+
+# Construct the output file path
+output_txt = os.path.abspath(os.path.join(os.getcwd(), f"../tkz/{llm_model}_{gp_model}_{n_individuals}_c4-bp.txt"))
 process_csv_files(input_directory, output_txt, selected_seeds=selected_seeds)
