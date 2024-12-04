@@ -9,7 +9,7 @@ from policies import RandomPolicy, GreedyPolicy
 
 llm = "31_405B_NEW"
 exp_name = "results_101_100_False"
-gp_model = "lgp"
+gp_model = "cgp"
 curriculum = "0_0_0_100"
 num_runs = 30
 episode_length = 50
@@ -40,8 +40,8 @@ for seed in range(1, num_runs + 1):
 
         # Set up the environment and policy
         c4_env = Connect4Env(num_disk_as_reward=False)
-        c4_env.render()
-        c4_env.render_in_step = True
+        # c4_env.render()
+        # c4_env.render_in_step = True
 
         new_policy = MinimaxPolicy()
 
