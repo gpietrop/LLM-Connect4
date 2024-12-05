@@ -1,16 +1,30 @@
 #!/bin/bash
 
-n_generations=100
+n_generations=200
 n_individuals=101
 pol="31_405B_NEW"
-python_script="cgp_evolution_c4.py"
+python_scripts=("cgp_evolution_c4.py" "gp_evolution_c4.py")  # List of Python scripts
+greedy_configs=(
+    "0 0 0 100"
+    "10 10 10 70"
+    "20 20 20 40"
+    "20 0 0 80"
+    "0 20 0 80"
+    "0 0 20 80"
+    "10 20 30 40"
+)
+adaptive_values=(True False)  # Adaptive flag values
 
-for seed in {1..31}; do
-        python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 0 --greedy_intermediate 0 --greedy_improved 0 --greedy_expert 100 --policy_version "$pol"
-        python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 10 --greedy_intermediate 10 --greedy_improved 10 --greedy_expert 70 --policy_version "$pol"
-        python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 20 --greedy_intermediate 20 --greedy_improved 20 --greedy_expert 40 --policy_version "$pol"
-        python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 20 --greedy_intermediate 0 --greedy_improved 0 --greedy_expert 80 --policy_version "$pol"
-        python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 0 --greedy_intermediate 20 --greedy_improved 0 --greedy_expert 80 --policy_version "$pol"
-        python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 0 --greedy_intermediate 0 --greedy_improved 20 --greedy_expert 80 --policy_version "$pol"
-        python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations $n_generations --greedy 10 --greedy_intermediate 20 --greedy_improved 20 --greedy_expert 50 --policy_version "$pol"
+for python_script in "${python_scripts[@]}"; do
+    for config in "${greedy_configs[@]}"; do
+        for adaptive in "${adaptive_values[@]}"; do
+            for seed in {1..31}; do
+                IFS=' ' read -r -a greedy <<< "$config"
+                python $python_script --seed "$seed" --n_individuals "$n_individuals" --n_generations "$n_generations" \
+                    --policy_version "$pol" --greedy "${greedy[0]}" --greedy_intermediate "${greedy[1]}" \
+                    --greedy_improved "${greedy[2]}" --greedy_expert "${greedy[3]}" --adaptive "$adaptive"
+            done
+        done
+    done
 done
+
