@@ -208,9 +208,9 @@ if __name__ == '__main__':
         genomes = jnp.concatenate((survivals, offspring))
 
         # if change policy flag is set to True: change the policy when the best individual win
-        if config["adaptive"] and np.mean(percentages) > 1:
+        if config["adaptive"] and np.mean(percentages) > 0:
             # transfer the number of evaluation left to the other policy
-            n_greedy_intermediate_generations = n_greedy_improved_generations + (n_greedy_generations - n_generations)
+            n_greedy_intermediate_generations = n_greedy_improved_generations + (n_greedy_generations - _generation)
             break
 
     for _generation in tqdm(range(n_greedy_intermediate_generations), position=1,
@@ -262,10 +262,10 @@ if __name__ == '__main__':
         genomes = jnp.concatenate((survivals, offspring))
 
         # if change policy flag is set to True: change the policy when the best individual win
-        if config["adaptive"] and np.mean(percentages) > 1:
+        if config["adaptive"] and np.mean(percentages) > 0:
             # transfer the number of evaluation left to the other policy
             n_greedy_improved_generations = n_greedy_improved_generations + (
-                        n_greedy_intermediate_generations - n_generations)
+                        n_greedy_intermediate_generations - _generation)
             break
 
     for _generation in tqdm(range(n_greedy_improved_generations), position=1,
@@ -314,6 +314,13 @@ if __name__ == '__main__':
         # Update population
         assert len(genomes) == len(survivals) + len(offspring)
         genomes = jnp.concatenate((survivals, offspring))
+
+        # if change policy flag is set to True: change the policy when the best individual win
+        if config["adaptive"] and np.mean(percentages) > 0:
+            # transfer the number of evaluation left to the other policy
+            n_greedy_expert_generations = n_greedy_expert_generations + (
+                        n_greedy_improved_generations - _generation)
+            break
 
     for _generation in tqdm(range(n_greedy_expert_generations), position=1,
                             desc="Generations (Greedy Expert Policy)"):
