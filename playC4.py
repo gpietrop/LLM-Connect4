@@ -33,7 +33,7 @@ for seed in range(30, num_runs + 1):
         config_path = f"{base_dir}/{llm}/{exp_name}/connect4_trial_{seed}/config_{curriculum}.yaml"
         with open(config_path) as f:
             config = yaml.load(f, Loader=yaml.loader.FullLoader)
-            # print(f"Run {seed}: Config = {config}")
+            print(f"Run {seed}: Config = {config}")
 
         # Select the best genome
         best_genome = genomes[jnp.argmax(fitnesses)]
