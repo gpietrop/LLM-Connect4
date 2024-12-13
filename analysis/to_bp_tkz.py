@@ -136,11 +136,11 @@ def process_csv_files_4_policies(input_dir, output_file, flag, selected_seeds=No
 
 # Usage
 selected_seeds = range(30)  # Replace with actual seed values
-n_individuals = 50
+n_individuals = 101
 n_generations = 100
-gp_model = "lgp"  # This should be set or determined earlier in your script
+gp_model = "cgp"  # This should be set or determined earlier in your script
 llm_model = "31_405B_NEW"  # 31_405B_NEW
-flag_after_iteration_diff_policy = 0
+flag_after_iteration_diff_policy = 1
 
 # Determine input directory based on the type of model
 if gp_model == "lgp":

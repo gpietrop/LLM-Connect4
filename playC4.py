@@ -7,10 +7,10 @@ from c4_gym import Connect4Env
 from policies_validation import MinimaxPolicy
 from policies import RandomPolicy, GreedyPolicy
 
-llm = "31_405B_NEW"
-exp_name = "results_101_100_False"
-gp_model = "cgp"
-curriculum = "0_0_0_100"
+llm = "original"  # "31_405B_NEW"
+exp_name = "results_50_100_False"
+gp_model = "lgp"
+curriculum = "0_0_100"
 num_runs = 30
 episode_length = 50
 
@@ -23,7 +23,7 @@ losses = 0
 draws = 0
 
 # Loop through each run
-for seed in range(1, num_runs + 1):
+for seed in range(30, num_runs + 1):
     try:
         # Load fitnesses and genomes for the current seed
         fitnesses = jnp.load(f"{base_dir}/{llm}/{exp_name}/connect4_trial_{seed}/fitnesses_{curriculum}.npy")
@@ -43,7 +43,8 @@ for seed in range(1, num_runs + 1):
         # c4_env.render()
         # c4_env.render_in_step = True
 
-        new_policy = MinimaxPolicy()
+        # new_policy = MinimaxPolicy()
+        new_policy = RandomPolicy()
 
         # Evaluate the genome against Minimax
         if gp_model == "lgp":
@@ -53,16 +54,16 @@ for seed in range(1, num_runs + 1):
                                           new_policy=new_policy)
 
         reward = results["reward"]
-        # print(results)
+        perc = results["final_percentage"]
         # Record the result
-        if reward > 0:
+        if reward > 0 and perc == 1.0:
             victories += 1
-        elif reward == 0:
+        elif -5 < reward < 3 and perc == 0:
             losses += 1
         else:
             draws += 1
 
-        print(f"Run {seed}: Reward = {reward}")
+        print(f"Run {seed}: Reward = {reward}, Perc: = {perc}")
     except Exception as e:
         print(f"Error in run {seed}: {e}")
 
