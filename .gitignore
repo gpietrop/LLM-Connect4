@@ -1,0 +1,9 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore IDE settings
+.idea/
+
+# macOS
+.DS_Store
