@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5b61ae48-676e-49f5-91cf-9180ed6167f8" name="Changes" comment="visualization.">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2p14ClP55tkI27x6G8scZzyO1g0" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Python.bp_winning_epoch.executor": "Run",
+    "Python.cgp_evolution_c4.executor": "Run",
+    "Python.gp_evolution_c4.executor": "Run",
+    "Python.lineplot.executor": "Run",
+    "Python.playC4.executor": "Run",
+    "Python.pval.executor": "Run",
+    "Python.to_bp_tkz.executor": "Run",
+    "Python.to_bp_tkz_optimized.executor": "Run",
+    "Python.to_lp_tkz.executor": "Run",
+    "Python.winning_percentage.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/gpietrop/PycharmProjects/LLM-Connect4",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-0509580d9d50-746f403e7f0c-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-241.14494.241" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5b61ae48-676e-49f5-91cf-9180ed6167f8" name="Changes" comment="" />
+      <created>1731920123483</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1731920123483</updated>
+    </task>
+    <task id="LOCAL-00001" summary="add file for bp with matplotlib and to generate tkz bp .txt file.">
+      <option name="closed" value="true" />
+      <created>1732114244283</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732114244283</updated>
+    </task>
+    <task id="LOCAL-00002" summary="improve run_tests_vm.sh.">
+      <option name="closed" value="true" />
+      <created>1732114425105</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732114425105</updated>
+    </task>
+    <task id="LOCAL-00003" summary="add 31_8B_GPT routine.">
+      <option name="closed" value="true" />
+      <created>1732123931404</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1732123931404</updated>
+    </task>
+    <task id="LOCAL-00004" summary="add 31_8B_GPT_NEW routine.">
+      <option name="closed" value="true" />
+      <created>1732258626683</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1732258626683</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add expert policy and expert policy routine 405B. add 3b new policies.">
+      <option name="closed" value="true" />
+      <created>1732788849693</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1732788849693</updated>
+    </task>
+    <task id="LOCAL-00006" summary="minor bug.">
+      <option name="closed" value="true" />
+      <created>1732789029605</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1732789029605</updated>
+    </task>
+    <task id="LOCAL-00007" summary="change bash file to add expert policy.">
+      <option name="closed" value="true" />
+      <created>1732789527724</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1732789527724</updated>
+    </task>
+    <task id="LOCAL-00008" summary="change saving name bp.">
+      <option name="closed" value="true" />
+      <created>1733129811819</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1733129811819</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add cgp routine.">
+      <option name="closed" value="true" />
+      <created>1733131119182</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1733131119182</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add cgp routine.">
+      <option name="closed" value="true" />
+      <created>1733145402430</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1733145402430</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add cgp routine.">
+      <option name="closed" value="true" />
+      <created>1733148542760</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1733148542760</updated>
+    </task>
+    <task id="LOCAL-00012" summary="add cgp routine.">
+      <option name="closed" value="true" />
+      <created>1733157636776</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1733157636776</updated>
+    </task>
+    <task id="LOCAL-00013" summary="change bp.">
+      <option name="closed" value="true" />
+      <created>1733214100326</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1733214100326</updated>
+    </task>
+    <task id="LOCAL-00014" summary="routine for result visualization.">
+      <option name="closed" value="true" />
+      <created>1733225618345</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1733225618345</updated>
+    </task>
+    <task id="LOCAL-00015" summary="bash file for new exps.">
+      <option name="closed" value="true" />
+      <created>1733234656715</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1733234656715</updated>
+    </task>
+    <task id="LOCAL-00016" summary="visualization.">
+      <option name="closed" value="true" />
+      <created>1733239400339</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1733239400339</updated>
+    </task>
+    <task id="LOCAL-00017" summary="visualization &amp; new bash file.">
+      <option name="closed" value="true" />
+      <created>1733242251601</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1733242251601</updated>
+    </task>
+    <task id="LOCAL-00018" summary="visualization &amp; analysis.">
+      <option name="closed" value="true" />
+      <created>1733298842792</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1733298842792</updated>
+    </task>
+    <task id="LOCAL-00019" summary="visualization &amp; analysis.">
+      <option name="closed" value="true" />
+      <created>1733330491238</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1733330491238</updated>
+    </task>
+    <task id="LOCAL-00020" summary="visualization &amp; analysis.">
+      <option name="closed" value="true" />
+      <created>1733330496168</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1733330496168</updated>
+    </task>
+    <task id="LOCAL-00021" summary="debug adaptive strategy.">
+      <option name="closed" value="true" />
+      <created>1733388571843</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1733388571843</updated>
+    </task>
+    <task id="LOCAL-00022" summary="script for exps with 4 policies-more epochs and adaptive routine implementation.">
+      <option name="closed" value="true" />
+      <created>1733388792658</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1733388792658</updated>
+    </task>
+    <task id="LOCAL-00023" summary="script for exps with 4 policies-more epochs and adaptive routine implementation.">
+      <option name="closed" value="true" />
+      <created>1734078695642</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1734078695642</updated>
+    </task>
+    <task id="LOCAL-00024" summary="visualization.">
+      <option name="closed" value="true" />
+      <created>1734078717063</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1734078717063</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add file for bp with matplotlib and to generate tkz bp .txt file." />
+    <MESSAGE value="improve run_tests_vm.sh." />
+    <MESSAGE value="add 31_8B_GPT routine." />
+    <MESSAGE value="add 31_8B_GPT_NEW routine." />
+    <MESSAGE value="add expert policy and expert policy routine 405B. add 3b new policies." />
+    <MESSAGE value="minor bug." />
+    <MESSAGE value="change bash file to add expert policy." />
+    <MESSAGE value="change saving name bp." />
+    <MESSAGE value="add cgp routine." />
+    <MESSAGE value="change bp." />
+    <MESSAGE value="routine for result visualization." />
+    <MESSAGE value="bash file for new exps." />
+    <MESSAGE value="visualization &amp; new bash file." />
+    <MESSAGE value="visualization &amp; analysis." />
+    <MESSAGE value="debug adaptive strategy." />
+    <MESSAGE value="script for exps with 4 policies-more epochs and adaptive routine implementation." />
+    <MESSAGE value="visualization." />
+    <option name="LAST_COMMIT_MESSAGE" value="visualization." />
+  </component>
+</project>
