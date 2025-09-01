@@ -12,6 +12,7 @@
 - `results_cgp/` – Folder storing evolution results from CGP experiments.
 - `results_lgp/` – Folder storing evolution results from LGP experiments.
 - `analysis/` – Analysis scripts (e.g. `to_bp_tkz.py`, `bp_winning_epoch.py`, etc.).
+- `testc4.py` is to provide an interface example of a game against the Random Policy.
 
 ##  Quick Start
 
