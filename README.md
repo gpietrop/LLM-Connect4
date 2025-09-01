@@ -38,8 +38,16 @@
    ./run_tests_GPT.sh
    ```
 
-4. The output files will be stored in either the `results_lgp` or `results_cgp` folder (depending on the GP variant used). Inside, each LLM has its own directory, with subdirectories named after individual runs. 
-
+4. The output files are stored in either the `results_lgp` or `results_cgp` folder, depending on the GP variant used. These folders are created automatically inside the project dierctory after running the .sh files. 
+Inside each of these, the structure is organized as follows:
+   - A subfolder named after the LLM used (e.g., `31_8B_NEW`).
+   - Within it, subfolders follow the naming convention `results_X_Y_False`, where:
+     - `X` = number of individuals
+     - `Y` = number of generations
+     - `False` = indicates whether automatic generation changes after a win are enabled (always set to `False` in this paper)
+   - Each `results_X_Y_False` folder contains one subfolder per run (e.g., `connect4_trial_1` for run 1), storing:
+     - All results for the different curricula
+     - The best individual found in that run
 ## Citation 
 If you use this code please cite: 
 ```
