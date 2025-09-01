@@ -43,7 +43,7 @@
 ## Citation 
 If you use this code please cite: 
 ```
-      @inproceedings{
+  @inproceedings{
   jorgensen2024large,
   title={Large Language Model-based Test Case Generation for GP Agents},
   author={Jorgensen, Steven and Nadizar, Giorgia and Pietropolli, Gloria and Manzoni, Luca and Medvet, Eric and O'Reilly, Una-May and Hemberg, Erik},
