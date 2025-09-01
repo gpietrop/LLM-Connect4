@@ -10,7 +10,7 @@
    cd LLM-Connect4
    ```
 
-## Set up environment 
+2. **Setup Environment**
 
    ```bash
    python -m venv venv
@@ -18,7 +18,7 @@
    pip install -r requirements.txt
    ```
 
-## Run experiments
+3. **Run Experiments**
 
    ```bash
       chmod +x run_tests_*.sh
