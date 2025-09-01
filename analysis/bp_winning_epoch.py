@@ -102,9 +102,9 @@ def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds,
 
 
 # Example usage
-seeds = range(30)  # Replace with actual seed values
+seeds = range(31)  # Replace with actual seed values
 llm_model = "31_405B_NEW"  # "31_405B_NEW"
-gp_model = "lgp"
+gp_model = "cgp"
 pol = 4
 boxplot_first_nonzero_percentage_with_median(pol, llm_model, seeds, gp_model,
                                              n_generations=100, n_individuals=101,

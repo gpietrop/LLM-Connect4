@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import jax.numpy as jnp
 from cgpax.utils import readable_lgp_program_from_genome
 import yaml
@@ -10,8 +11,8 @@ from policies import RandomPolicy, GreedyPolicy
 llm = "original"  # "31_405B_NEW"
 exp_name = "results_50_100_False"
 gp_model = "lgp"
-curriculum = "0_0_100"
-num_runs = 30
+curriculum = "10_0_90"
+num_runs = 1
 episode_length = 50
 
 # Base directory based on gp_model
@@ -23,11 +24,13 @@ losses = 0
 draws = 0
 
 # Loop through each run
-for seed in range(30, num_runs + 1):
+for seed in range(9, 10):
     try:
         # Load fitnesses and genomes for the current seed
         fitnesses = jnp.load(f"{base_dir}/{llm}/{exp_name}/connect4_trial_{seed}/fitnesses_{curriculum}.npy")
         genomes = jnp.load(f"{base_dir}/{llm}/{exp_name}/connect4_trial_{seed}/genotypes_{curriculum}.npy")
+        print(f"{base_dir}/{llm}/{exp_name}/connect4_trial_{seed}/genotypes_{curriculum}.npy")
+        print(fitnesses)
 
         # Load configuration
         config_path = f"{base_dir}/{llm}/{exp_name}/connect4_trial_{seed}/config_{curriculum}.yaml"
@@ -41,10 +44,21 @@ for seed in range(30, num_runs + 1):
         # Set up the environment and policy
         c4_env = Connect4Env(num_disk_as_reward=False)
         # c4_env.render()
-        # c4_env.render_in_step = True
+
+        # c4_env = Connect4Env(num_disk_as_reward=False)
+        obs = c4_env.reset()
+        print("Observation shape:", obs.shape)
+        print("Flattened observation:", obs)
+        print("Reshaped to 6x6:\n", obs.reshape(6, 6))
+
+        test_board = np.arange(36).reshape(6, 6)
+        print("Test board:\n", test_board)
+
+        c4_env.render_in_step = True
 
         # new_policy = MinimaxPolicy()
-        new_policy = RandomPolicy()
+        # new_policy = RandomPolicy()
+        new_policy = GreedyPolicy()
 
         # Evaluate the genome against Minimax
         if gp_model == "lgp":
