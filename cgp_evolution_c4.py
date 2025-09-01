@@ -62,26 +62,26 @@ if __name__ == '__main__':
     if args.policy_version == 'original':
         from policies import GreedyPolicy, IntermediateGreedyPolicy, ImprovedGreedyPolicy
     if args.policy_version == '31_8B':
-        from policies_31_8B import EasyPolicy as GreedyPolicy
-        from policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
-        from policies_31_8B import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policy.policies_31_8B import EasyPolicy as GreedyPolicy
+        from LLM_policy.policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policy.policies_31_8B import HardPolicy as ImprovedGreedyPolicy
     if args.policy_version == '31_8B_GPT':
-        from policies_31_8B import EasyPolicy as GreedyPolicy
-        from policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
-        from policies_31_8B import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policy.policies_31_8B import EasyPolicy as GreedyPolicy
+        from LLM_policy.policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policy.policies_31_8B import HardPolicy as ImprovedGreedyPolicy
     if args.policy_version == '31_405B':
-        from policies_31_405B import EasyPolicy as GreedyPolicy
-        from policies_31_405B import MediumPolicy as IntermediateGreedyPolicy
-        from policies_31_405B import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policy.policies_31_405B import EasyPolicy as GreedyPolicy
+        from LLM_policy.policies_31_405B import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policy.policies_31_405B import HardPolicy as ImprovedGreedyPolicy
     if args.policy_version == '31_405B_NEW':
-        from policies_31_405B_NEW import EasyPolicy as GreedyPolicy
-        from policies_31_405B_NEW import MediumPolicy as IntermediateGreedyPolicy
-        from policies_31_405B_NEW import HardPolicy as ImprovedGreedyPolicy
-        from policies_31_405B_NEW import ExpertPolicy
+        from LLM_policy.policies_31_405B_NEW import EasyPolicy as GreedyPolicy
+        from LLM_policy.policies_31_405B_NEW import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policy.policies_31_405B_NEW import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policy.policies_31_405B_NEW import ExpertPolicy
     if args.policy_version == '31_8B_NEW':
-        from policies_31_8B_NEW import EasyPolicy as GreedyPolicy
-        from policies_31_8B_NEW import MediumPolicy as IntermediateGreedyPolicy
-        from policies_31_8B_NEW import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policy.policies_31_8B_NEW import EasyPolicy as GreedyPolicy
+        from LLM_policy.policies_31_8B_NEW import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policy.policies_31_8B_NEW import HardPolicy as ImprovedGreedyPolicy
 
     config = {
         # "n_rows": 20,

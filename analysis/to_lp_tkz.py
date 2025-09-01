@@ -49,7 +49,7 @@ for selected_seed in selected_seeds:
             # Determine input directory based on the type of model
             if gp_model == "lgp":
                 input_directory = os.path.join(os.getcwd(),
-                                               f'../results/{llm_model}/results_{n_individuals}_{n_generations}_False'
+                                               f'../results_lgp/{llm_model}/results_{n_individuals}_{n_generations}_False'
                                                f'/connect4_trial_{selected_seed}')
             elif gp_model == "cgp":
                 input_directory = os.path.join(os.getcwd(),

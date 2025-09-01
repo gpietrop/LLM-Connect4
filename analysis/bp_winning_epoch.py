@@ -19,7 +19,7 @@ def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds,
     for my_seed in seeds:
         if gp_model == "lgp":
             directory_path = os.path.join(os.getcwd(),
-                                          f'../results/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
+                                          f'../results_lgp/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
         else:
             directory_path = os.path.join(os.getcwd(),
                                           f'../results_cgp/{llm_model}/results_{n_individuals}_{n_generations}_{adaptive}/connect4_trial_{my_seed}')
@@ -95,8 +95,8 @@ def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds,
     plt.ylabel('First Nonzero Index After Threshold', fontsize=13)
     plt.tight_layout()
 
-    plt.savefig(
-        os.path.join(os.getcwd(), f'../results/bp_{gp_model}_{llm_model}_{n_generations}_{n_individuals}.png'))
+    # plt.savefig(
+    #     os.path.join(os.getcwd(), f'../results_lgp/bp_{gp_model}_{llm_model}_{n_generations}_{n_individuals}.png'))
     plt.show()
     plt.close()
 
@@ -105,7 +105,7 @@ def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds,
 seeds = range(31)  # Replace with actual seed values
 llm_model = "31_405B_NEW"  # "31_405B_NEW"
 gp_model = "cgp"
-pol = 4
+pol = 30
 boxplot_first_nonzero_percentage_with_median(pol, llm_model, seeds, gp_model,
                                              n_generations=100, n_individuals=101,
                                              adaptive=False
