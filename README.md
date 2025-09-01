@@ -2,6 +2,7 @@
 
 **LLM-Connect4**: A Connect Four test-case generation framework using Large Language Models and GP agents, introduced in **“Large Language Model-based Test Case Generation for GP Agents”**, **GECCO 2024**.
 
+If you are interested in the Mario GP experiments instead of Connect Four, please refer to [MarioGP-T](https://github.com/giorgia-nadizar/MarioGP-T).
 
 ## Contents
 
