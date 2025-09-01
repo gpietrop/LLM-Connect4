@@ -1,7 +1,7 @@
 #!/bin/bash
 
 n_generations=200
-n_individuals=51
+n_individuals=50
 pol="31_405B_NEW"
 python_scripts=("cgp_evolution_c4.py" "lgp_evolution_c4.py")  # List of Python scripts
 greedy_configs=(
