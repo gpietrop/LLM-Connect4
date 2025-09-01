@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b61ae48-676e-49f5-91cf-9180ed6167f8" name="Changes" comment="visualization." />
+    <list default="true" id="5b61ae48-676e-49f5-91cf-9180ed6167f8" name="Changes" comment="visualization.">
+      <change beforePath="$PROJECT_DIR$/cgp_evolution_c4.py" beforeDir="false" afterPath="$PROJECT_DIR$/cgp_evolution_c4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lgp_evolution_c4.py" beforeDir="false" afterPath="$PROJECT_DIR$/lgp_evolution_c4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_tests_GPT.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run_tests_GPT.sh" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

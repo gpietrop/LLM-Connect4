@@ -45,7 +45,7 @@ if __name__ == '__main__':
     parser.add_argument('--seed', type=int, help='Seed for the experiment', default=1)
     parser.add_argument('--n_individuals', type=int, help='Seed for the experiment', default=10)
     parser.add_argument('--n_generations', type=int, help='Seed for the experiment', default=8)
-    parser.add_argument('--policy_version', type=str, choices=['original', '31_8B', '31_405B', '31_405B_NEW',
+    parser.add_argument('--policy_version', type=str, choices=['GPT', '31_8B', '31_405B', '31_405B_NEW',
                                                                '31_8B_NEW', '31_8B_GPT'],
                         help='Policy version to use', default='31_405B_NEW')
     parser.add_argument('--greedy', type=int, help='Percentage for greedy strategy', default=100)
@@ -57,29 +57,29 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.policy_version == 'original':
-        from policies import GreedyPolicy, IntermediateGreedyPolicy, ImprovedGreedyPolicy
+    if args.policy_version == 'GPT':
+        from LLM_policies.policies_GPT import GreedyPolicy, IntermediateGreedyPolicy, ImprovedGreedyPolicy
     if args.policy_version == '31_8B':
-        from LLM_policy.policies_31_8B import EasyPolicy as GreedyPolicy
-        from LLM_policy.policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
-        from LLM_policy.policies_31_8B import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policies.policies_31_8B import EasyPolicy as GreedyPolicy
+        from LLM_policies.policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policies.policies_31_8B import HardPolicy as ImprovedGreedyPolicy
     if args.policy_version == '31_8B_GPT':
-        from LLM_policy.policies_31_8B import EasyPolicy as GreedyPolicy
-        from LLM_policy.policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
-        from LLM_policy.policies_31_8B import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policies.policies_31_8B import EasyPolicy as GreedyPolicy
+        from LLM_policies.policies_31_8B import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policies.policies_31_8B import HardPolicy as ImprovedGreedyPolicy
     if args.policy_version == '31_405B':
-        from LLM_policy.policies_31_405B import EasyPolicy as GreedyPolicy
-        from LLM_policy.policies_31_405B import MediumPolicy as IntermediateGreedyPolicy
-        from LLM_policy.policies_31_405B import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policies.policies_31_405B import EasyPolicy as GreedyPolicy
+        from LLM_policies.policies_31_405B import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policies.policies_31_405B import HardPolicy as ImprovedGreedyPolicy
     if args.policy_version == '31_405B_NEW':
-        from LLM_policy.policies_31_405B_NEW import EasyPolicy as GreedyPolicy
-        from LLM_policy.policies_31_405B_NEW import MediumPolicy as IntermediateGreedyPolicy
-        from LLM_policy.policies_31_405B_NEW import HardPolicy as ImprovedGreedyPolicy
-        from LLM_policy.policies_31_405B_NEW import ExpertPolicy
+        from LLM_policies.policies_31_405B_NEW import EasyPolicy as GreedyPolicy
+        from LLM_policies.policies_31_405B_NEW import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policies.policies_31_405B_NEW import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policies.policies_31_405B_NEW import ExpertPolicy
     if args.policy_version == '31_8B_NEW':
-        from LLM_policy.policies_31_8B_NEW import EasyPolicy as GreedyPolicy
-        from LLM_policy.policies_31_8B_NEW import MediumPolicy as IntermediateGreedyPolicy
-        from LLM_policy.policies_31_8B_NEW import HardPolicy as ImprovedGreedyPolicy
+        from LLM_policies.policies_31_8B_NEW import EasyPolicy as GreedyPolicy
+        from LLM_policies.policies_31_8B_NEW import MediumPolicy as IntermediateGreedyPolicy
+        from LLM_policies.policies_31_8B_NEW import HardPolicy as ImprovedGreedyPolicy
 
     config = {
         "n_rows": 20,

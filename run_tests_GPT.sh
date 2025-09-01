@@ -2,7 +2,7 @@
 
 n_generations=100
 n_individuals=25
-pol="original"
+pol="GPT"
 
 for python_script in lgp_evolution_c4.py cgp_evolution_c4.py; do
     for seed in {1..30}; do
