@@ -60,7 +60,7 @@ Inside each of these, the structure is organized as follows:
      - The best individual found in that run
 
 
-**Run Analysis**
+## Run Analysis
    After experiments are complete, you can generate analysis plots using the `bp.py` script inside the `analysis/` folder. Example usage:
    ```bash
    # Run using the same arguments as in the .sh script used for running the experiments
