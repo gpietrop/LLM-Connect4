@@ -17,13 +17,13 @@ If you are interested in the Mario GP experiments instead of Connect Four, pleas
 
 ##  Quick Start
 
-1. **Clone the repository**
+### 1. **Clone the repository**
    ```bash
    git clone https://github.com/gpietrop/LLM-Connect4.git
    cd LLM-Connect4
    ```
 
-2. **Setup Environment**
+### 2. **Setup Environment**
 
    ```bash
    python -m venv venv
@@ -31,7 +31,9 @@ If you are interested in the Mario GP experiments instead of Connect Four, pleas
    pip install -r requirements.txt
    ```
 
-3. **Run Experiments**
+### 3. **Run Experiments**
+
+   There is a different `.sh` script for each LLM (policy version):  
 
    ```bash
    chmod +x run_tests_*.sh
@@ -39,8 +41,14 @@ If you are interested in the Mario GP experiments instead of Connect Four, pleas
    ./run_tests_31_405B.sh
    ./run_tests_GPT.sh
    ```
-
-4. The output files are stored in either the `results_lgp` or `results_cgp` folder, depending on the GP variant used. These folders are created automatically inside the project dierctory after running the .sh files. 
+   Each script already sets the correct policy version.
+   If you want to customize the experiments (e.g., change the number of generations or the population size), just open the script and edit the variables at the top:
+   ```bash
+   n_generations=200   # number of generations
+   n_individuals=80    # population size
+   ```
+   
+The output files are stored in either the `results_lgp` or `results_cgp` folder, depending on the GP variant used. These folders are created automatically inside the project dierctory after running the .sh files. 
 Inside each of these, the structure is organized as follows:
    - A subfolder named after the LLM used (e.g., `31_8B_NEW`).
    - Within it, subfolders follow the naming convention `results_X_Y_False`, where:
@@ -52,7 +60,7 @@ Inside each of these, the structure is organized as follows:
      - The best individual found in that run
 
 
-3. **Run Analysis**
+**Run Analysis**
    After experiments are complete, you can generate analysis plots using the `bp.py` script inside the `analysis/` folder. Example usage:
    ```bash
    # Run using the same arguments as in the .sh script used for running the experiments
