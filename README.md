@@ -50,6 +50,27 @@ Inside each of these, the structure is organized as follows:
    - Each `results_X_Y_False` folder contains one subfolder per run (e.g., `connect4_trial_1` for run 1), storing:
      - All results for the different curricula
      - The best individual found in that run
+
+
+3. **Run Analysis**
+   After experiments are complete, you can generate analysis plots using the `bp.py` script inside the `analysis/` folder. Example usage:
+   ```bash
+   # Run with default settings (adaptive = False)
+   python analysis/bp.py --pol GPT
+   
+   # Change GP model and generations
+   python analysis/bp.py --llm_model GPT --gp_model cgp --n_generations 200 --n_individuals 80
+
+   ```
+   Arguments:
+   - `--llm_model` – LLM model name (default: `GPT`)
+   - `--gp_model` – GP variant (default: `lgp`)
+   - `--n_generations` – number of generations (default: `100`)
+   - `--n_individuals` – number of individuals (default: `50`)
+   - `--seed_first` – first seed (default: `1`)
+   - `--seed_last` – first seed (default: `30`)
+
+
 ## Citation 
 If you use this code please cite: 
 ```
