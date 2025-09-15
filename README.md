@@ -55,10 +55,7 @@ Inside each of these, the structure is organized as follows:
 3. **Run Analysis**
    After experiments are complete, you can generate analysis plots using the `bp.py` script inside the `analysis/` folder. Example usage:
    ```bash
-   # Run with default settings (adaptive = False)
-   python analysis/bp.py --pol GPT
-   
-   # Change GP model and generations
+   # Run using the same arguments as in the .sh script used for running the experiments
    python analysis/bp.py --llm_model GPT --gp_model cgp --n_generations 200 --n_individuals 80
 
    ```
@@ -72,7 +69,7 @@ Inside each of these, the structure is organized as follows:
 
 
 ## Citation 
-If you use this code please cite: 
+If you use this code, please cite: 
 ```
   @inproceedings{
   jorgensen2024large,
