@@ -1,7 +1,7 @@
 #!/bin/bash
 
 n_generations=100
-n_individuals=25
+n_individuals=50
 pol="GPT"
 
 for python_script in lgp_evolution_c4.py cgp_evolution_c4.py; do

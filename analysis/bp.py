@@ -1,13 +1,14 @@
 import os
 import math
 import re
+import argparse
 import glob
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds, gp_model, n_generations=100, n_individuals=25, adaptive=False):
+def make_boxplot(num_policies, llm_model, seeds, gp_model, n_generations, n_individuals, adaptive=False):
     # Initialize a list to store the first index where percentage > 0 after a certain threshold
     nonzero_indices = []
     # Dictionary to count valid nonzero indices for each file
@@ -52,6 +53,7 @@ def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds,
                 valid_nonzero_counts[file_name] = valid_nonzero_counts.get(file_name, 0) + 1
 
     # Convert the list to a DataFrame if there are valid nonzero indices
+    print(nonzero_index)
     if nonzero_indices:
         boxplot_data = pd.DataFrame(nonzero_indices, columns=['File', 'First Nonzero Index After Threshold'])
     else:
@@ -69,7 +71,6 @@ def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds,
     y_limit = ax.get_ylim()[1]
     y_text_offset = (y_limit - y_max) * 0.1  # Offset the text by 10% of the range above the max value
 
-    # Annotate each box with the count of valid nonzero indices and their ratio
     # Annotate each box with the count of valid nonzero indices and their ratio
     for i, file in enumerate(boxplot_data['File'].unique()):
         count = valid_nonzero_counts.get(file, 0)
@@ -102,11 +103,26 @@ def boxplot_first_nonzero_percentage_with_median(num_policies, llm_model, seeds,
 
 
 # Example usage
-seeds = range(31)  # Replace with actual seed values
-llm_model = "31_405B_NEW"  # "31_405B_NEW"
-gp_model = "cgp"
-pol = 30
-boxplot_first_nonzero_percentage_with_median(pol, llm_model, seeds, gp_model,
-                                             n_generations=100, n_individuals=101,
-                                             adaptive=False
-                                             )
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pol", default=3)
+    parser.add_argument("--llm_model", default="GPT")
+    parser.add_argument("--gp_model", default="lgp")
+    parser.add_argument("--n_generations", type=int, default=100)
+    parser.add_argument("--n_individuals", type=int, default=50)
+    parser.add_argument("--seed_first", type=int, default=1)
+    parser.add_argument("--seed_last", type=int, default=30)
+    parser.add_argument("--adaptive", action="store_true")
+
+    args = parser.parse_args()
+    seeds = range(args.seed_first, args.seed_last + 1)
+
+    make_boxplot(
+        args.pol,
+        args.llm_model,
+        seeds,
+        args.gp_model,
+        n_generations=args.n_generations,
+        n_individuals=args.n_individuals,
+        adaptive=args.adaptive
+    )
