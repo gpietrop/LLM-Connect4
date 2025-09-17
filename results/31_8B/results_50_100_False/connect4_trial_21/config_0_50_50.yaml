@@ -1,0 +1,28 @@
+adaptive: false
+crossover: false
+genome_size: 100
+n_constants: 2
+n_extra_registers: 5
+n_functions: 12
+n_generations: 100
+n_in: 38
+n_in_env: 36
+n_individuals: 50
+n_out: 36
+n_registers: 79
+n_rows: 20
+p_mut_functions: 0.1
+p_mut_lhs: 0.3
+p_mut_rhs: 0.1
+run_name: connect4_trial
+seed: 21
+selection:
+  elite_size: 5
+  tour_size: 2
+  type: tournament
+solver: lgp
+survival: truncation
+yellow_strategy:
+  greedy: 0
+  greedy_improved: 50
+  greedy_intermediate: 50
